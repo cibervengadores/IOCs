@@ -12,7 +12,8 @@ bot.command('start', (ctx) => {
 bot.command('chatp', async (ctx) => {
   const petition = ctx.message.text.replace('/chatp', '').trim();
   if (petition) {
-    ctx.reply(`Petición guardada en peticiones.md de https://github.com/cibervengadores/IOCs.`); // Este mensaje puede ser cambiado para enlazar con server.js
+    // Envía la petición al servidor para guardarla
+    ctx.reply(`Petición guardada en peticiones.md de https://github.com/cibervengadores/IOCs.`);
   } else {
     ctx.reply('Por favor, proporciona una petición después del comando.');
   }
