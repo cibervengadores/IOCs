@@ -54,11 +54,11 @@ bot.launch().then(() => {
   console.error('Error al lanzar el bot:', error);
 });
 
-// Código para manejar el webhook (si es necesario)
+// Código para manejar el webhook
 const express = require('express');
 const app = express();
 
-app.use(bot.webhookCallback('/bot'));
+app.use(bot.webhookCallback('/bot')); // Establece el webhook
 
 const PORT = process.env.PORT || 3000; // Usa el puerto configurado en la variable de entorno o el 3000 por defecto
 app.listen(PORT, () => {
