@@ -14,6 +14,10 @@ const FILE_PATH = 'peticiones.md'; // Cambiado a peticiones.md
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
   try {
+    // Configurar el nombre y el correo de usuario
+    await git.addConfig('user.name', 'cibervengadores');
+    await git.addConfig('user.email', 'cibervengadores@proton.me');
+
     // Asegúrate de que el archivo existe y si no, lo crea
     if (!fs.existsSync(FILE_PATH)) {
       fs.writeFileSync(FILE_PATH, ''); // Crea el archivo si no existe
