@@ -48,6 +48,15 @@ const addToFile = async (petition) => {
     // Guardar los cambios en GitHub
     const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
 
+    // Primero, hacer pull para integrar los cambios remotos
+    try {
+      await git.pull('origin', 'main'); // Asegúrate de usar el nombre correcto de tu rama
+      console.log('Cambios remotos integrados');
+    } catch (pullError) {
+      console.error('Error al hacer pull:', pullError);
+      throw new Error('Error al intentar actualizar el repositorio remoto.'); // Lanza un error para manejarlo más arriba
+    }
+
     // Añadir, commitear y hacer push a GitHub
     await git.add(FILE_PATH);
     await git.commit(`Add petition: ${petition}`);
@@ -55,6 +64,7 @@ const addToFile = async (petition) => {
     console.log('Cambios enviados a GitHub');
   } catch (error) {
     console.error('Error guardando en GitHub:', error);
+    throw error; // Lanza el error para manejarlo más arriba
   }
 };
 
@@ -67,8 +77,12 @@ bot.command('chatp', async (ctx) => {
 
   const petition = ctx.message.text.replace('/chatp', '').trim();
   if (petition) {
-    await addToFile(petition);
-    ctx.reply(`Petición guardada en peticiones.md de https://github.com/cibervengadores/IOCs.`);
+    try {
+      await addToFile(petition);
+      ctx.reply(`Petición guardada en peticiones.md de https://github.com/cibervengadores/IOCs.`);
+    } catch (error) {
+      ctx.reply('Ocurrió un error al procesar tu petición. Intenta de nuevo más tarde.');
+    }
   } else {
     ctx.reply('Por favor, proporciona una petición después del comando.');
   }
