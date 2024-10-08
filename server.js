@@ -1,16 +1,16 @@
 const { Telegraf } = require('telegraf');
 const simpleGit = require('simple-git');
 const fs = require('fs');
-const { exec } = require('child_process'); // Importa exec
+const { exec } = require('child_process');
 require('dotenv').config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const git = simpleGit();
 
-const GITHUB_REPO = process.env.GITHUB_REPO; // Asegúrate de que esto sea correcto
+const GITHUB_REPO = process.env.GITHUB_REPO;
 const GITHUB_USER = process.env.GITHUB_USER;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const FILE_PATH = 'peticiones.md'; // Cambiado a peticiones.md
+const FILE_PATH = 'peticiones.md';
 
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
@@ -38,7 +38,7 @@ const addToFile = async (petition) => {
 
     // Asegúrate de que el archivo existe y si no, lo crea
     if (!fs.existsSync(FILE_PATH)) {
-      fs.writeFileSync(FILE_PATH, ''); // Crea el archivo si no existe
+      fs.writeFileSync(FILE_PATH, '');
     }
 
     // Agregar la petición al archivo
@@ -48,14 +48,8 @@ const addToFile = async (petition) => {
     // Guardar los cambios en GitHub
     const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
 
-    // Primero, hacer pull para integrar los cambios remotos
-    try {
-      await git.pull('origin', 'main'); // Asegúrate de usar el nombre correcto de tu rama
-      console.log('Cambios remotos integrados');
-    } catch (pullError) {
-      console.error('Error al hacer pull:', pullError);
-      throw new Error('Error al intentar actualizar el repositorio remoto.'); // Lanza un error para manejarlo más arriba
-    }
+    // Hacer pull primero para integrar cambios remotos
+    await git.pull('origin', 'main'); // Cambia 'main' por tu rama principal si es necesario
 
     // Añadir, commitear y hacer push a GitHub
     await git.add(FILE_PATH);
@@ -64,7 +58,12 @@ const addToFile = async (petition) => {
     console.log('Cambios enviados a GitHub');
   } catch (error) {
     console.error('Error guardando en GitHub:', error);
-    throw error; // Lanza el error para manejarlo más arriba
+    // Si el error es de rechazo de push, intenta hacer un pull y luego un push
+    if (error.message.includes('rejected')) {
+      console.log('Intentando hacer pull y push de nuevo debido a cambios remotos.');
+      await git.pull('origin', 'main'); // Nuevamente, intenta hacer pull
+      await git.push(gitUrl, 'main'); // Luego intenta hacer push
+    }
   }
 };
 
