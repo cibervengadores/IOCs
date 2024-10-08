@@ -1,6 +1,7 @@
 const { Telegraf } = require('telegraf');
 const simpleGit = require('simple-git');
 const fs = require('fs');
+const { exec } = require('child_process'); // Importa exec
 require('dotenv').config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -14,9 +15,26 @@ const FILE_PATH = 'peticiones.md'; // Cambiado a peticiones.md
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
   try {
-    // Configurar el nombre y el correo de usuario
-    await git.addConfig('user.name', 'cibervengadores');
-    await git.addConfig('user.email', 'cibervengadores@proton.me');
+    // Configurar el nombre y el correo de usuario usando exec
+    await new Promise((resolve, reject) => {
+      exec('git config --global user.name "cibervengadores"', (error) => {
+        if (error) {
+          console.error(`Error configurando nombre de usuario: ${error}`);
+          return reject(error);
+        }
+        resolve();
+      });
+    });
+
+    await new Promise((resolve, reject) => {
+      exec('git config --global user.email "cibervengadores@proton.me"', (error) => {
+        if (error) {
+          console.error(`Error configurando correo electrónico: ${error}`);
+          return reject(error);
+        }
+        resolve();
+      });
+    });
 
     // Asegúrate de que el archivo existe y si no, lo crea
     if (!fs.existsSync(FILE_PATH)) {
