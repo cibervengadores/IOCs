@@ -1,39 +1,68 @@
 const { Telegraf } = require('telegraf');
-const express = require('express');
+const simpleGit = require('simple-git');
 const fs = require('fs');
 require('dotenv').config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const app = express();
+const git = simpleGit();
+
+const GITHUB_REPO = process.env.GITHUB_REPO; // Asegúrate de que esto sea correcto
+const GITHUB_USER = process.env.GITHUB_USER;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const FILE_PATH = 'peticiones.md'; // Cambiado a peticiones.md
 
 // Función para añadir la petición al archivo peticiones.md
-const addToFile = (petition) => {
-  const filePath = 'peticiones.md'; // Asegúrate de que este archivo se pueda crear en el directorio donde se ejecuta el bot
-  fs.appendFile(filePath, `${petition}\n`, (err) => {
-    if (err) {
-      console.error('Error escribiendo en el archivo:', err);
-    } else {
-      console.log('Petición añadida:', petition);
+const addToFile = async (petition) => {
+  try {
+    // Asegúrate de que el archivo existe y si no, lo crea
+    if (!fs.existsSync(FILE_PATH)) {
+      fs.writeFileSync(FILE_PATH, ''); // Crea el archivo si no existe
     }
-  });
+
+    // Agregar la petición al archivo
+    fs.appendFileSync(FILE_PATH, `${petition}\n`);
+    console.log('Petición añadida:', petition);
+
+    // Guardar los cambios en GitHub
+    const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
+    
+    // Añadir, commitear y hacer push a GitHub
+    await git.add(FILE_PATH);
+    await git.commit(`Add petition: ${petition}`);
+    await git.push(gitUrl, 'main'); // Cambia 'main' por tu rama principal si es necesario
+    console.log('Cambios enviados a GitHub');
+  } catch (error) {
+    console.error('Error guardando en GitHub:', error);
+  }
 };
 
 // Código del bot
 bot.command('chatp', async (ctx) => {
   const petition = ctx.message.text.replace('/chatp', '').trim();
   if (petition) {
-    addToFile(petition);
+    await addToFile(petition);
     ctx.reply(`Petición guardada en peticiones.md de https://github.com/cibervengadores/IOCs.`);
   } else {
     ctx.reply('Por favor, proporciona una petición después del comando.');
   }
 });
 
-// Lanza el bot
-bot.launch();
+// Lanzar el bot
+bot.launch().then(() => {
+  console.log('Bot iniciado y escuchando comandos.');
+}).catch((error) => {
+  console.error('Error al lanzar el bot:', error);
+});
 
-// Configura el webhook si es necesario
+// Código para manejar el webhook (si es necesario)
+const express = require('express');
+const app = express();
+
 app.use(bot.webhookCallback('/bot'));
 
-// Exporta la app para usarla en un entorno de servidor
-module.exports = app;
+const PORT = process.env.PORT || 3000; // Usa el puerto configurado en la variable de entorno o el 3000 por defecto
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
+
+module.exports = app; // Exporta la app para usar con un servidor Express si es necesario
