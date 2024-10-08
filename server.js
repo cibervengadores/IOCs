@@ -17,7 +17,7 @@ const addToFile = async (petition) => {
   try {
     // Configurar el nombre y el correo de usuario usando exec
     await new Promise((resolve, reject) => {
-      exec('git config --global user.name "Juan Pérez"', (error) => {
+      exec('git config --global user.name "cibervengadores"', (error) => {
         if (error) {
           console.error(`Error configurando nombre de usuario: ${error}`);
           return reject(error);
@@ -27,7 +27,7 @@ const addToFile = async (petition) => {
     });
 
     await new Promise((resolve, reject) => {
-      exec('git config --global user.email "juan.perez@example.com"', (error) => {
+      exec('git config --global user.email "cibervengadores@proton.me"', (error) => {
         if (error) {
           console.error(`Error configurando correo electrónico: ${error}`);
           return reject(error);
@@ -58,7 +58,9 @@ const addToFile = async (petition) => {
     // Añadir, commitear y hacer push a GitHub
     await git.add(FILE_PATH);
     await git.commit(`Add petition: ${petition}`);
-    await git.push(gitUrl, 'main'); // Cambia 'main' por tu rama principal si es necesario
+    
+    // Realizar el push a GitHub con --force
+    await git.push(gitUrl, 'main', {'--force': null}); // Cambia 'main' por tu rama principal si es necesario
     console.log('Cambios enviados a GitHub');
   } catch (error) {
     console.error('Error guardando en GitHub:', error);
@@ -68,7 +70,7 @@ const addToFile = async (petition) => {
       console.log('Intentando hacer pull y push de nuevo debido a cambios remotos.');
       try {
         await git.pull('origin', 'main'); // Nuevamente, intenta hacer pull
-        await git.push(gitUrl, 'main'); // Luego intenta hacer push
+        await git.push(gitUrl, 'main', {'--force': null}); // Luego intenta hacer push forzado
       } catch (pullError) {
         console.error('Error al hacer pull o push después del rechazo:', pullError);
       }
