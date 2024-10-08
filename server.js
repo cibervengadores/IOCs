@@ -1,45 +1,46 @@
 const { Telegraf } = require('telegraf');
-const simpleGit = require('simple-git');
+const axios = require('axios'); // Necesitarás instalar axios
 const fs = require('fs');
 require('dotenv').config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const git = simpleGit();
 
-const GITHUB_REPO = process.env.GITHUB_REPO;
-const GITHUB_USER = process.env.GITHUB_USER;
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const FILE_PATH = 'peticiones.md'; // Cambiado a peticiones.md
+const GITHUB_REPO = process.env.GITHUB_REPO; // Nombre del repositorio
+const GITHUB_USER = process.env.GITHUB_USER; // Tu usuario de GitHub
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // Tu token de GitHub
+const FILE_PATH = 'peticiones.md'; // Nombre del archivo en el repositorio
 
-// Función para añadir la petición al archivo peticiones.md
+// Función para añadir la petición al archivo peticiones.md en GitHub
 const addToFile = async (petition) => {
   try {
-    // Asegúrate de que el archivo existe y si no, lo crea
-    if (!fs.existsSync(FILE_PATH)) {
-      fs.writeFileSync(FILE_PATH, ''); // Crea el archivo si no existe
-    }
+    // Obtener el contenido actual del archivo peticiones.md
+    const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_PATH}`;
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`,
+      },
+    });
 
-    // Agregar la petición al archivo
-    fs.appendFileSync(FILE_PATH, `${petition}\n`);
-    console.log('Petición añadida:', petition);
+    // Extraer el contenido existente
+    const content = Buffer.from(response.data.content, 'base64').toString();
+    
+    // Añadir la nueva petición
+    const newContent = `${content}${petition}\n`;
+    
+    // Actualizar el archivo en GitHub
+    await axios.put(url, {
+      message: `Add petition: ${petition}`,
+      content: Buffer.from(newContent).toString('base64'),
+      sha: response.data.sha, // Necesario para actualizar el archivo
+    }, {
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`,
+      },
+    });
 
-    const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
-
-    // Configurar el nombre y correo de usuario para los commits
-    await git.addConfig('user.email', 'cibervengadores@proton.me');
-    await git.addConfig('user.name', 'cibervegnadores');
-
-    // Hacer pull para obtener cambios remotos
-    await git.pull(gitUrl, 'main');
-    console.log('Repositorios sincronizados con éxito');
-
-    // Añadir, commitear y hacer push a GitHub
-    await git.add(FILE_PATH);
-    await git.commit(`Add petition: ${petition}`);
-    await git.push(gitUrl, 'main'); // Cambia 'main' por tu rama principal si es necesario
-    console.log('Cambios enviados a GitHub');
+    console.log('Petición añadida y cambios enviados a GitHub');
   } catch (error) {
-    console.error('Error guardando en GitHub:', error);
+    console.error('Error guardando en GitHub:', error.response.data.message || error.message);
   }
 };
 
