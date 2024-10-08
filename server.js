@@ -17,7 +17,7 @@ const addToFile = async (petition) => {
   try {
     // Configurar el nombre y el correo de usuario usando exec
     await new Promise((resolve, reject) => {
-      exec('git config --global user.name "cibervengadores"', (error) => {
+      exec('git config --global user.name "Juan Pérez"', (error) => {
         if (error) {
           console.error(`Error configurando nombre de usuario: ${error}`);
           return reject(error);
@@ -27,7 +27,7 @@ const addToFile = async (petition) => {
     });
 
     await new Promise((resolve, reject) => {
-      exec('git config --global user.email "cibervengadores@proton.me"', (error) => {
+      exec('git config --global user.email "juan.perez@example.com"', (error) => {
         if (error) {
           console.error(`Error configurando correo electrónico: ${error}`);
           return reject(error);
@@ -49,7 +49,11 @@ const addToFile = async (petition) => {
     const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
 
     // Hacer pull primero para integrar cambios remotos
-    await git.pull('origin', 'main'); // Cambia 'main' por tu rama principal si es necesario
+    try {
+      await git.pull('origin', 'main'); // Cambia 'main' por tu rama principal si es necesario
+    } catch (error) {
+      console.error('Error al hacer pull:', error);
+    }
 
     // Añadir, commitear y hacer push a GitHub
     await git.add(FILE_PATH);
@@ -58,11 +62,18 @@ const addToFile = async (petition) => {
     console.log('Cambios enviados a GitHub');
   } catch (error) {
     console.error('Error guardando en GitHub:', error);
-    // Si el error es de rechazo de push, intenta hacer un pull y luego un push
+
+    // Manejo de errores al hacer push
     if (error.message.includes('rejected')) {
       console.log('Intentando hacer pull y push de nuevo debido a cambios remotos.');
-      await git.pull('origin', 'main'); // Nuevamente, intenta hacer pull
-      await git.push(gitUrl, 'main'); // Luego intenta hacer push
+      try {
+        await git.pull('origin', 'main'); // Nuevamente, intenta hacer pull
+        await git.push(gitUrl, 'main'); // Luego intenta hacer push
+      } catch (pullError) {
+        console.error('Error al hacer pull o push después del rechazo:', pullError);
+      }
+    } else if (error.message.includes('Could not read from remote repository')) {
+      console.error('No se pudo leer del repositorio remoto. Verifica la URL y tus credenciales.');
     }
   }
 };
@@ -78,7 +89,7 @@ bot.command('chatp', async (ctx) => {
   if (petition) {
     try {
       await addToFile(petition);
-      ctx.reply(`Petición guardada en peticiones.md de https://github.com/cibervengadores/IOCs.`);
+      ctx.reply(`Petición guardada en peticiones.md de https://github.com/${GITHUB_USER}/${GITHUB_REPO}.`);
     } catch (error) {
       ctx.reply('Ocurrió un error al procesar tu petición. Intenta de nuevo más tarde.');
     }
