@@ -1,25 +1,25 @@
 const { Telegraf } = require('telegraf');
-const fetch = require('node-fetch');
 const simpleGit = require('simple-git');
+const fs = require('fs');
 require('dotenv').config();
 
-const git = simpleGit();
 const bot = new Telegraf(process.env.BOT_TOKEN);
+const git = simpleGit();
 
 const GITHUB_REPO = process.env.GITHUB_REPO;
 const GITHUB_USER = process.env.GITHUB_USER;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const FILE_PATH = 'peticiones.txt';
 
+// Función para agregar peticiones a GitHub
 const addToGitHub = async (text) => {
-  const gitUrl = `https://cibervengadores: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@github.com/github.com/cibervengadores/IOCs.git`;
+  const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
 
   try {
     await git.clone(gitUrl);
     await git.pull();
 
-    const fs = require('fs');
-    const filePath = `IOCs/peticiones.txt`;
+    const filePath = `IOCs/peticiones.txt`; // Ajusta la ruta según sea necesario
     fs.appendFileSync(filePath, `${text}\n`);
 
     await git.add(filePath);
@@ -31,6 +31,7 @@ const addToGitHub = async (text) => {
   }
 };
 
+// Manejar el comando /chatp
 bot.command('chatp', async (ctx) => {
   const petition = ctx.message.text.replace('/chatp', '').trim();
   if (petition) {
@@ -41,4 +42,5 @@ bot.command('chatp', async (ctx) => {
   }
 });
 
+// Lanzar el bot
 bot.launch();
