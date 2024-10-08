@@ -11,7 +11,8 @@
     "express": "^4.21.0",
     "node-fetch": "^3.3.2",
     "simple-git": "^3.27.0",
-    "telegraf": "^4.16.3"
+    "telegraf": "^4.16.3",
+    "serverless-http": "^3.2.0"
   },
   "license": "ISC"
 }
