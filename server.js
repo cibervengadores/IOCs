@@ -8,7 +8,7 @@ const app = express();
 
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = (petition) => {
-  const filePath = 'peticiones.md'; // Cambiamos a peticiones.md
+  const filePath = 'peticiones.md'; // Asegúrate de que este archivo se pueda crear en el directorio donde se ejecuta el bot
   fs.appendFile(filePath, `${petition}\n`, (err) => {
     if (err) {
       console.error('Error escribiendo en el archivo:', err);
@@ -23,13 +23,17 @@ bot.command('chatp', async (ctx) => {
   const petition = ctx.message.text.replace('/chatp', '').trim();
   if (petition) {
     addToFile(petition);
-    ctx.reply('Petición guardada en peticiones.md de https://github.com/cibervengadores/IOCs');
+    ctx.reply(`Petición guardada en peticiones.md de https://github.com/cibervengadores/IOCs.`);
   } else {
     ctx.reply('Por favor, proporciona una petición después del comando.');
   }
 });
 
+// Lanza el bot
 bot.launch();
 
+// Configura el webhook si es necesario
 app.use(bot.webhookCallback('/bot'));
-module.exports = app; // Cambié el export para que funcione correctamente con Express
+
+// Exporta la app para usarla en un entorno de servidor
+module.exports = app;
