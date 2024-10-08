@@ -2,17 +2,16 @@
   "name": "telegram-github-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "express": "^4.21.0",
     "node-fetch": "^3.3.2",
     "simple-git": "^3.27.0",
     "telegraf": "^4.16.3"
-  }
+  },
+  "license": "ISC"
 }
