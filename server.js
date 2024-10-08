@@ -1,6 +1,5 @@
 const { Telegraf } = require('telegraf');
-const axios = require('axios'); // Necesitarás instalar axios
-const fs = require('fs');
+const axios = require('axios'); // Asegúrate de que axios esté instalado
 require('dotenv').config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -13,15 +12,17 @@ const FILE_PATH = 'peticiones.md'; // Nombre del archivo en el repositorio
 // Función para añadir la petición al archivo peticiones.md en GitHub
 const addToFile = async (petition) => {
   try {
-    // Obtener el contenido actual del archivo peticiones.md
+    // URL de la API para el archivo peticiones.md
     const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_PATH}`;
+
+    // Intentar obtener el contenido del archivo
     const response = await axios.get(url, {
       headers: {
         Authorization: `token ${GITHUB_TOKEN}`,
       },
     });
 
-    // Extraer el contenido existente
+    // Extraer el contenido existente y convertirlo de base64
     const content = Buffer.from(response.data.content, 'base64').toString();
     
     // Añadir la nueva petición
@@ -40,7 +41,25 @@ const addToFile = async (petition) => {
 
     console.log('Petición añadida y cambios enviados a GitHub');
   } catch (error) {
-    console.error('Error guardando en GitHub:', error.response.data.message || error.message);
+    // Si el archivo no existe, se crea uno nuevo
+    if (error.response && error.response.status === 404) {
+      try {
+        // Crear el archivo con el contenido de la primera petición
+        await axios.put(url, {
+          message: `Create peticiones.md`,
+          content: Buffer.from(petition).toString('base64'),
+        }, {
+          headers: {
+            Authorization: `token ${GITHUB_TOKEN}`,
+          },
+        });
+        console.log('Archivo creado en GitHub con la primera petición');
+      } catch (createError) {
+        console.error('Error creando el archivo en GitHub:', createError.response.data.message || createError.message);
+      }
+    } else {
+      console.error('Error guardando en GitHub:', error.response.data.message || error.message);
+    }
   }
 };
 
@@ -49,7 +68,7 @@ bot.command('chatp', async (ctx) => {
   const petition = ctx.message.text.replace('/chatp', '').trim();
   if (petition) {
     await addToFile(petition);
-    ctx.reply(`Petición guardada en peticiones.md de https://github.com/cibervengadores/IOCs.`);
+    ctx.reply(`Petición guardada en peticiones.md de https://github.com/${GITHUB_USER}/${GITHUB_REPO}.`);
   } else {
     ctx.reply('Por favor, proporciona una petición después del comando.');
   }
