@@ -3,7 +3,6 @@ const simpleGit = require('simple-git');
 const fs = require('fs');
 const { exec } = require('child_process');
 require('dotenv').config();
-const axios = require('axios'); // Asegúrate de tener axios instalado
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const git = simpleGit();
@@ -13,50 +12,37 @@ const GITHUB_USER = process.env.GITHUB_USER;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const FILE_PATH = 'peticiones.md';
 
-// Función para configurar el usuario de Git
-const setGitConfig = async () => {
-  try {
-    await exec(`git config --global user.name "${GITHUB_USER}"`);
-    await exec(`git config --global user.email "${GITHUB_USER}@proton.me"`);
-  } catch (error) {
-    console.error(`Error configurando nombre o correo: ${error}`);
-  }
-};
-
-// Llama a esta función al inicio
-setGitConfig();
-
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
-  try {
-    if (!fs.existsSync(FILE_PATH)) {
-      fs.writeFileSync(FILE_PATH, '');
-    }
-
-    fs.appendFileSync(FILE_PATH, `${petition}\n`);
-    console.log('Petición añadida:', petition);
-
-    // Configura la URL del repositorio usando HTTPS y el token
-    const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
-
-    console.log('Intentando hacer pull desde:', gitUrl);
     try {
-      await git.pull('origin', 'main'); // Cambia 'main' si usas otra rama principal
+        if (!fs.existsSync(FILE_PATH)) {
+            fs.writeFileSync(FILE_PATH, '');
+        }
+
+        fs.appendFileSync(FILE_PATH, `${petition}\n`);
+        console.log('Petición añadida:', petition);
+
+        const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
+
+        console.log('Intentando hacer pull desde:', gitUrl);
+        try {
+            await git.pull('origin', 'main'); // Cambia 'main' si tu rama principal es diferente
+        } catch (error) {
+            console.error('Error al hacer pull:', error.message);
+            console.error('URL del repositorio:', gitUrl);
+            throw error;
+        }
+
+        await git.add(FILE_PATH);
+        await git.commit(`Add petition: ${petition}`);
+
+        await git.push(gitUrl, 'main'); // Cambia 'main' si tu rama principal es diferente
+        console.log('Cambios enviados a GitHub');
     } catch (error) {
-      console.error('Error al hacer pull:', error.message);
-      console.error('URL del repositorio:', gitUrl);
-      throw error;
+        console.error('Error guardando en GitHub:', error.message);
     }
-
-    await git.add(FILE_PATH);
-    await git.commit(`Add petition: ${petition}`);
-
-    await git.push(gitUrl, 'main', { '--force': null });
-    console.log('Cambios enviados a GitHub');
-  } catch (error) {
-    console.error('Error guardando en GitHub:', error.message);
-  }
 };
+
 
 // Código del bot
 bot.command('chatp', async (ctx) => {
@@ -69,7 +55,7 @@ bot.command('chatp', async (ctx) => {
   if (petition) {
     try {
       await addToFile(petition);
-      ctx.reply(`Petición guardada de https://github.com/${GITHUB_USER}/${GITHUB_REPO}/peticiones.md.`);
+      ctx.reply(`Petición guardada de https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.md.`);
     } catch (error) {
       ctx.reply('Ocurrió un error al procesar tu petición. Intenta de nuevo más tarde.');
     }
