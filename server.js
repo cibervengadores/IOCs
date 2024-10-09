@@ -1,6 +1,7 @@
 const { Telegraf } = require('telegraf');
 const simpleGit = require('simple-git');
 const fs = require('fs');
+const express = require('express'); // Importar Express
 require('dotenv').config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -11,13 +12,15 @@ const GITHUB_USER = process.env.GITHUB_USER;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const FILE_PATH = 'peticiones.md';
 
+const app = express(); // Inicializar la aplicación Express
+
+// Configurar nombre y correo de Git
+git.addConfig('user.name', 'cibervengadores');
+git.addConfig('user.email', 'cibervengadores@proton.me');
+
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
     try {
-        // Configurar nombre y correo de Git (puedes comentar esto si ya está configurado globalmente)
-        await git.addConfig('user.name', 'cibervengadores');
-        await git.addConfig('user.email', 'cibervengadores@proton.me');
-
         // Asegurarse de que el archivo existe o crearlo
         if (!fs.existsSync(FILE_PATH)) {
             fs.writeFileSync(FILE_PATH, '');
@@ -27,14 +30,15 @@ const addToFile = async (petition) => {
         fs.appendFileSync(FILE_PATH, `${petition}\n`);
         console.log('Petición añadida:', petition);
 
+        const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
+
         // Añadir el archivo y hacer commit
         await git.add(FILE_PATH);
         await git.commit(`Add petition: ${petition}`);
 
         // Hacer push forzado
         console.log('Intentando hacer push forzado.');
-        const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
-        await git.push(gitUrl, 'main', { '--force': null }); // Cambia 'main' si tu rama principal es diferente
+        await git.push(gitUrl, 'main', { '--force': null });
         console.log('Push forzado realizado.');
     } catch (error) {
         console.error('Error guardando en GitHub:', error.message);
@@ -46,7 +50,7 @@ bot.command('chatp', async (ctx) => {
     try {
         const petition = ctx.message.text.replace('/chatp', '').trim();
         if (petition) {
-            await addToFile(petition); // Llama a la función para agregar la petición al archivo
+            await addToFile(petition);
             ctx.reply(`Petición guardada en https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.md`);
         } else {
             ctx.reply('Por favor, proporciona una petición después del comando.');
@@ -57,13 +61,18 @@ bot.command('chatp', async (ctx) => {
     }
 });
 
+// Configurar el webhook de Telegram
+app.use(bot.webhookCallback('/bot')); // Asegúrate de que este sea el endpoint correcto
+
+// Iniciar el servidor Express
+const PORT = process.env.PORT || 3000; // Puerto que escucha
+app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
+
 // Iniciar el bot
 bot.launch().then(() => {
     console.log('Bot iniciado y escuchando comandos.');
 }).catch((error) => {
     console.error('Error al lanzar el bot:', error);
-});
-const PORT = process.env.PORT || 3000; // Asegúrate de que el puerto sea 3000 o el especificado por Render
-app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
