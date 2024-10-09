@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "echo \"No build step required\""
   },
   "dependencies": {
     "axios": "^1.7.7",
@@ -15,5 +16,8 @@
     "simple-git": "^3.27.0",
     "telegraf": "^4.16.3"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "20.x"
+  }
 }
