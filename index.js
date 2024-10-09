@@ -10,11 +10,17 @@ bot.command('start', (ctx) => {
 
 // Manejar el comando /chatp
 bot.command('chatp', async (ctx) => {
-  const petition = ctx.message.text.replace('/chatp', '').trim();
-  if (petition) {
-    ctx.reply(`Petición guardada en https://github.com/cibervengadores/IOCs/blob/main/peticiones.md`); // Este mensaje puede ser cambiado para enlazar con server.js
-  } else {
-    ctx.reply('Por favor, proporciona una petición después del comando.');
+  try {
+    const petition = ctx.message.text.replace('/chatp', '').trim();
+    if (petition) {
+      // Aquí podrías agregar lógica para guardar la petición
+      ctx.reply(`Petición guardada en https://github.com/cibervengadores/IOCs/blob/main/peticiones.md`);
+    } else {
+      ctx.reply('Por favor, proporciona una petición después del comando.');
+    }
+  } catch (error) {
+    console.error('Error al procesar el comando /chatp:', error);
+    ctx.reply('Ocurrió un error al procesar tu petición. Intenta de nuevo más tarde.');
   }
 });
 
