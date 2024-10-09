@@ -26,3 +26,4 @@ sube esta petición para e grupo de cibervengadores
 sube esta petición para e grupo de ciber
 sube esta petición para e grupo de cibervengadores
 guardar
+guardar esto y esto
