@@ -1,18 +1,15 @@
 {
   "name": "telegram-github-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Bot de Telegram que guarda peticiones en un archivo y lo sube a GitHub",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "build": "echo \"No build step required\""
   },
   "dependencies": {
-    "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "node-fetch": "^3.3.2",
-    "serverless-http": "^3.2.0",
     "simple-git": "^3.27.0",
     "telegraf": "^4.16.3"
   },
