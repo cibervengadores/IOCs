@@ -7,7 +7,7 @@ require('dotenv').config();
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const git = simpleGit();
 
-const GITHUB_REPO = process.env.GITHUB_REPO;
+const GITHUB_REPO = process.env.GITHUB_REPO; // Asegúrate de que no tenga .git al final
 const GITHUB_USER = process.env.GITHUB_USER;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const FILE_PATH = 'peticiones.md';
@@ -15,8 +15,8 @@ const FILE_PATH = 'peticiones.md';
 // Función para configurar el usuario de Git
 const setGitConfig = async () => {
   try {
-    await exec(`git config --global user.name "${GITHUB_USER}"`);
-    await exec(`git config --global user.email "${GITHUB_USER}@example.com"`);
+    await git.addConfig('user.name', GITHUB_USER);
+    await git.addConfig('user.email', `${GITHUB_USER}@proton.me`);
   } catch (error) {
     console.error(`Error configurando nombre o correo: ${error}`);
   }
@@ -37,35 +37,33 @@ const addToFile = async (petition) => {
     fs.appendFileSync(FILE_PATH, `${petition}\n`);
     console.log('Petición añadida:', petition);
 
-    // Guardar los cambios en GitHub
     const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
 
     // Hacer pull primero para integrar cambios remotos
-    try {
-      await git.pull('origin', 'main'); // Cambia 'main' por tu rama principal si es necesario
-    } catch (error) {
-      console.error('Error al hacer pull:', error);
-    }
+    await git.pull('origin', 'main'); // Cambia 'main' por tu rama principal si es necesario
 
     // Añadir, commitear y hacer push a GitHub
     await git.add(FILE_PATH);
     await git.commit(`Add petition: ${petition}`);
-    
-    // Realizar el push a GitHub con --force
-    await git.push(gitUrl, 'main', {'--force': null}); // Cambia 'main' por tu rama principal si es necesario
-    console.log('Cambios enviados a GitHub');
+
+    // Intentar push y manejar errores
+    await pushToGithub(gitUrl);
   } catch (error) {
     console.error('Error guardando en GitHub:', error);
-    
-    // Manejo de errores al hacer push
+  }
+};
+
+// Función para hacer push a GitHub
+const pushToGithub = async (gitUrl) => {
+  try {
+    await git.push(gitUrl, 'main'); // Cambia 'main' por tu rama principal si es necesario
+    console.log('Cambios enviados a GitHub');
+  } catch (error) {
+    console.error('Error en push:', error);
     if (error.message.includes('rejected')) {
       console.log('Intentando hacer pull y push de nuevo debido a cambios remotos.');
-      try {
-        await git.pull('origin', 'main'); // Nuevamente, intenta hacer pull
-        await git.push(gitUrl, 'main', {'--force': null}); // Luego intenta hacer push forzado
-      } catch (pullError) {
-        console.error('Error al hacer pull o push después del rechazo:', pullError);
-      }
+      await git.pull('origin', 'main'); // Intenta hacer pull nuevamente
+      await git.push(gitUrl, 'main'); // Luego intenta hacer push
     } else if (error.message.includes('Could not read from remote repository')) {
       console.error('No se pudo leer del repositorio remoto. Verifica la URL y tus credenciales.');
     }
