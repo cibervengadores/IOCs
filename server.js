@@ -17,7 +17,7 @@ const FILE_PATH = 'peticiones.md';
 const setGitConfig = async () => {
   try {
     await exec(`git config --global user.name "${GITHUB_USER}"`);
-    await exec(`git config --global user.email "${GITHUB_USER}@example.com"`);
+    await exec(`git config --global user.email "${GITHUB_USER}@proton.me"`);
   } catch (error) {
     console.error(`Error configurando nombre o correo: ${error}`);
   }
