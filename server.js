@@ -63,3 +63,7 @@ bot.launch().then(() => {
 }).catch((error) => {
     console.error('Error al lanzar el bot:', error);
 });
+const PORT = process.env.PORT || 3000; // Asegúrate de que el puerto sea 3000 o el especificado por Render
+app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
