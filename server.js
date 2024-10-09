@@ -29,25 +29,24 @@ const addToFile = async (petition) => {
         console.log('Intentando hacer pull desde:', gitUrl);
         try {
             await git.pull('origin', 'main'); // Cambia 'main' si tu rama principal es diferente
+            console.log('Pull realizado con éxito.');
         } catch (error) {
             console.error('Error al hacer pull:', error.message);
             console.error('URL del repositorio:', gitUrl);
-            // Lanza el error para manejarlo más adelante
-            throw error;
+            console.log('Intentando hacer push forzado.');
+            // Intentar hacer un push forzado si el pull falla
+            await git.push(gitUrl, 'main', { '--force': null });
+            console.log('Push forzado realizado.');
+            return; // Salir de la función
         }
 
+        // Agregar y commitear el archivo
         await git.add(FILE_PATH);
         await git.commit(`Add petition: ${petition}`);
 
-        // Intentar hacer push y forzar si es necesario
-        try {
-            await git.push(gitUrl, 'main'); // Cambia 'main' si tu rama principal es diferente
-            console.log('Cambios enviados a GitHub');
-        } catch (pushError) {
-            console.error('Error al hacer push. Intentando forzar el push:', pushError.message);
-            await git.push(gitUrl, 'main', { '--force': null });
-            console.log('Cambios forzados a GitHub');
-        }
+        // Hacer push
+        await git.push(gitUrl, 'main'); // Cambia 'main' si tu rama principal es diferente
+        console.log('Cambios enviados a GitHub');
     } catch (error) {
         console.error('Error guardando en GitHub:', error.message);
     }
