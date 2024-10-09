@@ -1,6 +1,10 @@
 const { Telegraf } = require('telegraf');
 require('dotenv').config();
 
+if (!process.env.BOT_TOKEN) {
+  throw new Error('Falta el token de Telegram. Asegúrate de que BOT_TOKEN está configurado en el archivo .env');
+}
+
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 // Código del bot
@@ -18,8 +22,18 @@ bot.command('chatp', async (ctx) => {
   }
 });
 
-// Exportar el manejador
-module.exports = (req, res) => {
-  bot.handleUpdate(req.body); // Manejar la actualización
-  res.sendStatus(200); // Enviar un estado 200
+// Exportar el manejador del webhook
+module.exports = async (req, res) => {
+  try {
+    // Verificar si el cuerpo de la petición no está vacío
+    if (req.body && Object.keys(req.body).length !== 0) {
+      await bot.handleUpdate(req.body); // Manejar la actualización de Telegram
+      res.sendStatus(200); // Responder con éxito
+    } else {
+      res.sendStatus(400); // Responder con "Bad Request" si el cuerpo está vacío
+    }
+  } catch (error) {
+    console.error('Error manejando la actualización de Telegram:', error);
+    res.sendStatus(500); // Responder con "Internal Server Error" en caso de fallo
+  }
 };

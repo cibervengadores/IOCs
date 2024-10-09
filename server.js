@@ -1,10 +1,10 @@
+const express = require('express');
 const { Telegraf } = require('telegraf');
 const simpleGit = require('simple-git');
 const fs = require('fs');
-const { exec } = require('child_process');
-const express = require('express');
 require('dotenv').config();
 
+const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const git = simpleGit();
 
@@ -26,17 +26,15 @@ const setGitConfig = async () => {
 // Llama a esta función al inicio
 setGitConfig();
 
-// Configura el webhook
-const webhookUrl = `${process.env.VERCEL_URL}/bot`;
-bot.telegram.setWebhook(webhookUrl);
-
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
   try {
+    // Asegúrate de que el archivo existe y si no, lo crea
     if (!fs.existsSync(FILE_PATH)) {
       fs.writeFileSync(FILE_PATH, '');
     }
 
+    // Agregar la petición al archivo
     fs.appendFileSync(FILE_PATH, `${petition}\n`);
     console.log('Petición añadida:', petition);
 
@@ -45,8 +43,11 @@ const addToFile = async (petition) => {
     // Hacer pull primero para integrar cambios remotos
     await git.pull('origin', 'main'); // Cambia 'main' por tu rama principal si es necesario
 
+    // Añadir, commitear y hacer push a GitHub
     await git.add(FILE_PATH);
     await git.commit(`Add petition: ${petition}`);
+
+    // Intentar push y manejar errores
     await pushToGithub(gitUrl);
   } catch (error) {
     console.error('Error guardando en GitHub:', error);
@@ -62,15 +63,23 @@ const pushToGithub = async (gitUrl) => {
     console.error('Error en push:', error);
     if (error.message.includes('rejected')) {
       console.log('Intentando hacer pull y push de nuevo debido a cambios remotos.');
-      await git.pull('origin', 'main');
-      await git.push(gitUrl, 'main');
+      await git.pull('origin', 'main'); // Intenta hacer pull nuevamente
+      await git.push(gitUrl, 'main'); // Luego intenta hacer push
     } else if (error.message.includes('Could not read from remote repository')) {
       console.error('No se pudo leer del repositorio remoto. Verifica la URL y tus credenciales.');
     }
   }
 };
 
+// Configurar el webhook
+app.use(bot.webhookCallback('/bot')); // Este es el endpoint del webhook
+
 // Código del bot
+bot.command('start', (ctx) => {
+  ctx.reply('¡Hola! Estoy aquí para recibir tus peticiones. Usa el comando /chatp para enviar una.');
+});
+
+// Manejar el comando /chatp
 bot.command('chatp', async (ctx) => {
   if (!ctx.message || !ctx.message.text) {
     ctx.reply('Error: No se pudo obtener el texto del mensaje.');
@@ -90,14 +99,11 @@ bot.command('chatp', async (ctx) => {
   }
 });
 
-// Código para manejar el webhook
-const app = express();
-app.use(express.json()); // Middleware para parsear JSON
-app.use(bot.webhookCallback('/bot'));
-
-const PORT = process.env.PORT || 3000;
+// Configurar el puerto y levantar el servidor
+const PORT = process.env.PORT || 3000; // Usa el puerto configurado en la variable de entorno o el 3000 por defecto
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
-module.exports = app; // Exporta la app para usar con un servidor Express si es necesario
+// Exportar la app para usar con un servidor Express si es necesario
+module.exports = app;
