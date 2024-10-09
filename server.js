@@ -14,7 +14,7 @@ const FILE_PATH = 'peticiones.md';
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
     try {
-        // Asegurarse de que el archivo existe
+        // Asegurarse de que el archivo existe o crearlo
         if (!fs.existsSync(FILE_PATH)) {
             fs.writeFileSync(FILE_PATH, '');
         }
@@ -25,27 +25,20 @@ const addToFile = async (petition) => {
 
         const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
 
-        console.log('Intentando hacer pull desde:', gitUrl);
-        try {
-            await git.pull('origin', 'main'); // Cambia 'main' si tu rama principal es diferente
-        } catch (error) {
-            console.error('Error al hacer pull:', error.message);
-        }
-
         // Añadir el archivo y hacer commit
         await git.add(FILE_PATH);
         await git.commit(`Add petition: ${petition}`);
 
-        // Intentar push forzado
+        // Hacer push forzado
         console.log('Intentando hacer push forzado.');
-        await git.push(gitUrl, 'main', {'--force': null}); // Cambia 'main' si tu rama principal es diferente
+        await git.push(gitUrl, 'main', { '--force': null });
         console.log('Push forzado realizado.');
     } catch (error) {
         console.error('Error guardando en GitHub:', error.message);
     }
 };
 
-// Código del bot
+// Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
     try {
         const petition = ctx.message.text.replace('/chatp', '').trim();
@@ -61,7 +54,7 @@ bot.command('chatp', async (ctx) => {
     }
 });
 
-// Lanzar el bot
+// Iniciar el bot
 bot.launch().then(() => {
     console.log('Bot iniciado y escuchando comandos.');
 }).catch((error) => {
