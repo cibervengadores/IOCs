@@ -12,30 +12,22 @@ const GITHUB_USER = process.env.GITHUB_USER;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const FILE_PATH = 'peticiones.md';
 
+// Función para configurar el usuario de Git
+const setGitConfig = async () => {
+  try {
+    await exec(`git config --global user.name "${GITHUB_USER}"`);
+    await exec(`git config --global user.email "${GITHUB_USER}@example.com"`);
+  } catch (error) {
+    console.error(`Error configurando nombre o correo: ${error}`);
+  }
+};
+
+// Llama a esta función al inicio
+setGitConfig();
+
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
   try {
-    // Configurar el nombre y el correo de usuario usando exec
-    await new Promise((resolve, reject) => {
-      exec('git config --global user.name "cibervengadores"', (error) => {
-        if (error) {
-          console.error(`Error configurando nombre de usuario: ${error}`);
-          return reject(error);
-        }
-        resolve();
-      });
-    });
-
-    await new Promise((resolve, reject) => {
-      exec('git config --global user.email "cibervengadores@proton.me"', (error) => {
-        if (error) {
-          console.error(`Error configurando correo electrónico: ${error}`);
-          return reject(error);
-        }
-        resolve();
-      });
-    });
-
     // Asegúrate de que el archivo existe y si no, lo crea
     if (!fs.existsSync(FILE_PATH)) {
       fs.writeFileSync(FILE_PATH, '');
@@ -64,7 +56,7 @@ const addToFile = async (petition) => {
     console.log('Cambios enviados a GitHub');
   } catch (error) {
     console.error('Error guardando en GitHub:', error);
-
+    
     // Manejo de errores al hacer push
     if (error.message.includes('rejected')) {
       console.log('Intentando hacer pull y push de nuevo debido a cambios remotos.');
