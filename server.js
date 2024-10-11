@@ -16,9 +16,11 @@ const FILE_PATH = 'peticiones.md';
 
 const app = express(); // Inicializar la aplicación Express
 
-// Configurar globalmente el nombre y el correo de Git
-await git.addConfig('user.name', 'cibervengadores');
-await git.addConfig('user.email', 'cibervengadores@proton.me');
+// Función para configurar Git
+const configureGit = async () => {
+    await git.addConfig('user.name', 'cibervengadores');
+    await git.addConfig('user.email', 'cibervengadores@proton.me');
+};
 
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
@@ -68,13 +70,14 @@ app.use(bot.webhookCallback('/bot')); // Asegúrate de que este sea el endpoint 
 
 // Iniciar el servidor Express
 const PORT = process.env.PORT || 3000; // Puerto que escucha
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
-});
-
-// Iniciar el bot
-bot.launch().then(() => {
-    console.log('Bot iniciado y escuchando comandos.');
-}).catch((error) => {
-    console.error('Error al lanzar el bot:', error);
+    // Configurar Git al iniciar el servidor
+    await configureGit();
+    // Iniciar el bot
+    bot.launch().then(() => {
+        console.log('Bot iniciado y escuchando comandos.');
+    }).catch((error) => {
+        console.error('Error al lanzar el bot:', error);
+    });
 });
