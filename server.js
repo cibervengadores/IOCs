@@ -40,7 +40,7 @@ const addToFile = async (petition) => {
         // Añadir la petición en formato de tabla
         const formattedPetition = `| ${petition.hash} | ${petition.archivo} | ${petition.deteccion} | ${petition.descripcion}\n`;
         fs.appendFileSync(FILE_PATH, formattedPetition);
-        console.log('Petición añadida:', formattedPetition);
+        console.log('✅ Petición añadida:', formattedPetition);
 
         const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
 
@@ -49,25 +49,29 @@ const addToFile = async (petition) => {
         await git.commit(`Add petition: ${petition.hash}`);
 
         // Hacer push forzado
-        console.log('Intentando hacer push forzado.');
+        console.log('🔄 Intentando hacer push forzado.');
         await git.push(gitUrl, 'main', { '--force': null });
-        console.log('Push forzado realizado.');
+        console.log('✅ Push forzado realizado.');
     } catch (error) {
         // Manejo de errores
         if (error.message.includes('index.lock')) {
-            console.error('Error: El archivo index.lock existe. Eliminarlo para continuar.');
+            console.error('⚠️ Error: El archivo index.lock existe. Eliminarlo para continuar.');
             // Eliminar el archivo de bloqueo
             fs.unlinkSync('.git/index.lock'); // Eliminar el archivo index.lock
-            console.log('Archivo index.lock eliminado. Intenta nuevamente.');
+            console.log('🗑️ Archivo index.lock eliminado. Intenta nuevamente.');
         } else {
-            console.error('Error guardando en GitHub:', error.message);
+            console.error('❌ Error guardando en GitHub:', error.message);
         }
     }
 };
 
 // Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
-    ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): Hash, Nombre del archivo, Detección, Descripción.');
+    ctx.reply(`✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): 
+1️⃣ Hash, 
+2️⃣ Nombre del archivo, 
+3️⃣ Detección, 
+4️⃣ Descripción.`);
     
     // Escuchar la respuesta del usuario
     bot.on('text', async (ctx) => {
@@ -84,17 +88,17 @@ bot.command('chatp', async (ctx) => {
 
             // Almacenar la petición
             await addToFile(petitionData);
-            
-            // Respuesta organizada
-            ctx.reply(`✅ **Indicador de compromiso guardado:**\n\n` +
-                      `**Hash:** ${petitionData.hash}\n` +
-                      `**Nombre del archivo:** ${petitionData.archivo}\n` +
-                      `**Detección:** ${petitionData.deteccion}\n` +
-                      `**Descripción:** ${petitionData.descripcion}\n\n` +
-                      `✅ **Indicador de compromiso guardada exitosamente!** 🎉\n` +
-                      `🔗 **Consulta aquí:** https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
+            ctx.reply(`✅ Indicador de compromiso guardado:
+
+1️⃣ Hash: ${petitionData.hash}
+2️⃣ Nombre del archivo: ${petitionData.archivo}
+3️⃣ Detección: ${petitionData.deteccion}
+4️⃣ Descripción: ${petitionData.descripcion}
+
+✅ Indicador de compromiso guardada exitosamente! 🎉
+🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
         } else {
-            ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). ❌');
+            ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
         }
     });
 });
