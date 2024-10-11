@@ -7,16 +7,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Imprimir variables de entorno para depuración
-console.log('BOT_TOKEN:', process.env.BOT_TOKEN);
-console.log('GITHUB_USER:', process.env.GITHUB_USER);
-console.log('GITHUB_REPO:', process.env.GITHUB_REPO);
+console.log('MY_BOT_TOKEN:', process.env.MY_BOT_TOKEN);
+console.log('MY_GITHUB_USER:', process.env.MY_GITHUB_USER);
+console.log('MY_GITHUB_REPO:', process.env.MY_GITHUB_REPO);
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf(process.env.MY_BOT_TOKEN); // Usar MY_BOT_TOKEN
 const git = simpleGit();
 
-const GITHUB_REPO = process.env.GITHUB_REPO; // Repositorio de GitHub
-const GITHUB_USER = process.env.GITHUB_USER; // Usuario de GitHub
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // Token de GitHub
+const GITHUB_REPO = process.env.MY_GITHUB_REPO; // Repositorio de GitHub
+const GITHUB_USER = process.env.MY_GITHUB_USER; // Usuario de GitHub
+const GITHUB_TOKEN = process.env.MY_GITHUB_TOKEN; // Token de GitHub
 const FILE_PATH = 'peticiones.md'; // Archivo donde se guardarán las peticiones
 
 const app = express(); // Inicializar la aplicación Express
