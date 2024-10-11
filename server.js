@@ -67,7 +67,7 @@ const addToFile = async (petition) => {
 
 // Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
-    ctx.reply('Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): Hash, Nombre del archivo, Detección, Descripción.');
+    ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): Hash, Nombre del archivo, Detección, Descripción.');
     
     // Escuchar la respuesta del usuario
     bot.on('text', async (ctx) => {
@@ -84,9 +84,17 @@ bot.command('chatp', async (ctx) => {
 
             // Almacenar la petición
             await addToFile(petitionData);
-            ctx.reply(`Petición guardada en https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
+            
+            // Respuesta organizada
+            ctx.reply(`✅ **Indicador de compromiso guardado:**\n\n` +
+                      `**Hash:** ${petitionData.hash}\n` +
+                      `**Nombre del archivo:** ${petitionData.archivo}\n` +
+                      `**Detección:** ${petitionData.deteccion}\n` +
+                      `**Descripción:** ${petitionData.descripcion}\n\n` +
+                      `✅ **Indicador de compromiso guardada exitosamente!** 🎉\n` +
+                      `🔗 **Consulta aquí:** https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
         } else {
-            ctx.reply('Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
+            ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). ❌');
         }
     });
 });
