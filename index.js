@@ -50,17 +50,8 @@ bot.on('text', async (ctx) => {
     // Almacenar la petición
     await addToFile(petitionData);
     
-    // Responder al usuario con la misma estructura
-    ctx.reply(`Petición guardada: ${hash}, ${archivo}, ${deteccion}, ${descripcion}`);
-});
-
-// Configurar el webhook de Telegram (opcional, si decides usar webhook)
-app.use(bot.webhookCallback('/bot')); // Asegúrate de que este sea el endpoint correcto
-
-// Iniciar el servidor Express
-const PORT = process.env.PORT || 3000; // Puerto que escucha
-app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
+    // Responder al usuario con el mensaje de confirmación
+    ctx.reply(`Indicador de compromiso alojado en: https://github.com/cibervengadores/IOCs/blob/main/peticiones.adoc`);
 });
 
 // Iniciar el bot

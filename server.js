@@ -11,6 +11,7 @@ dotenv.config();
 const app = express();
 const bot = new Telegraf(process.env.MY_BOT_TOKEN);
 const git = simpleGit();
+
 const GITHUB_REPO = process.env.MY_GITHUB_REPO;
 const GITHUB_USER = process.env.MY_GITHUB_USER;
 const GITHUB_TOKEN = process.env.MY_GITHUB_TOKEN; // Asegúrate de que también existe
@@ -57,45 +58,6 @@ const addToFile = async (petition) => {
         }
     }
 };
-
-// Manejo del comando /chatp
-bot.command('chatp', (ctx) => {
-    ctx.reply('Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): Hash, Nombre del archivo, Detección, Descripción.');
-});
-
-// Escuchar la respuesta del usuario
-bot.on('text', async (ctx) => {
-    const input = ctx.message.text.trim();
-
-    // Separar los datos por comas
-    const data = input.split(',').map(item => item.trim());
-
-    // Validar que se hayan proporcionado al menos 4 elementos
-    if (data.length < 4) {
-        ctx.reply('Faltan datos. Por favor, asegúrate de proporcionar todos los detalles: Hash, Nombre del archivo, Detección, Descripción. Si falta algún dato, se representará como un punto.');
-        return;
-    }
-
-    // Asignar los datos a variables, usando '.' si falta alguno
-    const hash = data[0] || '.';
-    const archivo = data[1] || '.';
-    const deteccion = data[2] || '.';
-    const descripcion = data[3] || '.';
-
-    // Crear el objeto de la petición
-    const petitionData = {
-        hash,
-        archivo,
-        deteccion,
-        descripcion
-    };
-
-    // Almacenar la petición
-    await addToFile(petitionData);
-    
-    // Responder al usuario con la misma estructura
-    ctx.reply(`Petición guardada: ${hash}, ${archivo}, ${deteccion}, ${descripcion}`);
-});
 
 // Configurar el webhook de Telegram (opcional, si decides usar webhook)
 app.use(bot.webhookCallback('/bot')); // Asegúrate de que este sea el endpoint correcto
