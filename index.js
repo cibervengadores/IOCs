@@ -31,12 +31,10 @@ bot.command('chatp', async (ctx) => {
 
         if (input.length === 4) {
             // Crear el objeto petitionData a partir de la entrada del usuario
-            const petitionData = {
-                hash: input[0].trim(),
-                archivo: input[1].trim(),
-                deteccion: input[2].trim(),
-                descripcion: input[3].trim(),
-            };
+            petitionData.hash = input[0].trim();
+            petitionData.archivo = input[1].trim();
+            petitionData.deteccion = input[2].trim();
+            petitionData.descripcion = input[3].trim();
 
             // Almacenar la petición
             await addToFile(petitionData);
