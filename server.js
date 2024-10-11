@@ -32,9 +32,12 @@ const isAllowedChat = (ctx) => {
     const chatId = ctx.chat.id.toString(); 
     const userId = ctx.from.id.toString(); 
 
+    // Permitir solo el uso en privado por el propietario del bot
     if (ctx.chat.type === 'private' && userId === MY_USER_ID) {
         return true; 
-    } else if (ctx.chat.type === 'supergroup' || ctx.chat.type === 'group') {
+    } 
+    // Permitir solo en los grupos especificados
+    else if (ctx.chat.type === 'supergroup' || ctx.chat.type === 'group') {
         return ALLOWED_GROUP_IDS.includes(chatId);
     }
 
@@ -75,12 +78,13 @@ bot.command('chatp', async (ctx) => {
         return;
     }
 
-    ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios):\n1️⃣ Hash,\n2️⃣ Nombre del archivo,\n3️⃣ Detección,\n4️⃣ Descripción. Responde a este mensaje.');
+    const message = await ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios):\n1️⃣ Hash,\n2️⃣ Nombre del archivo,\n3️⃣ Detección,\n4️⃣ Descripción. Res\n Responde a este mensaje.');⚠️..
 
+    // Esperar a que el usuario responda al mensaje
     bot.on('text', async (ctx) => {
-        const isReply = ctx.message.reply_to_message && ctx.message.reply_to_message.text;
+        const isReply = ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === message.message_id;
 
-        if (!isReply || !ctx.message.reply_to_message.text.includes('✨ Por favor, proporciona')) {
+        if (!isReply) {
             ctx.reply('⚠️ Responde a la solicitud de detalles.');
             return;
         }
