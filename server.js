@@ -6,20 +6,33 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
-const git = simpleGit();
-
 const GITHUB_REPO = process.env.GITHUB_REPO;
 const GITHUB_USER = process.env.GITHUB_USER;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const FILE_PATH = 'peticiones.md';
 
+// Verificar el token del bot antes de inicializar
+const botToken = process.env.BOT_TOKEN;
+if (!botToken) {
+    console.error('Error: BOT_TOKEN no está definido en las variables de entorno.');
+    process.exit(1); // Finaliza el proceso si el token no está definido
+}
+console.log('BOT_TOKEN cargado correctamente.');
+
+const bot = new Telegraf(botToken);
+const git = simpleGit();
+
 const app = express(); // Inicializar la aplicación Express
 
 // Función para configurar Git
 const configureGit = async () => {
-    await git.addConfig('user.name', 'cibervengadores');
-    await git.addConfig('user.email', 'cibervengadores@proton.me');
+    try {
+        await git.addConfig('user.name', 'cibervengadores');
+        await git.addConfig('user.email', 'cibervengadores@proton.me');
+        console.log('Configuración de Git completada.');
+    } catch (error) {
+        console.error('Error configurando Git:', error.message);
+    }
 };
 
 // Función para añadir la petición al archivo peticiones.md
@@ -72,12 +85,16 @@ app.use(bot.webhookCallback('/bot')); // Asegúrate de que este sea el endpoint 
 const PORT = process.env.PORT || 3000; // Puerto que escucha
 app.listen(PORT, async () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
+    
     // Configurar Git al iniciar el servidor
     await configureGit();
+
     // Iniciar el bot
-    bot.launch().then(() => {
+    try {
+        await bot.launch();
         console.log('Bot iniciado y escuchando comandos.');
-    }).catch((error) => {
+    } catch (error) {
         console.error('Error al lanzar el bot:', error);
-    });
+        process.exit(1); // Finaliza el proceso en caso de error crítico
+    }
 });
