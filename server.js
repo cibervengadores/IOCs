@@ -14,9 +14,9 @@ const FILE_PATH = 'peticiones.md';
 
 const app = express(); // Inicializar la aplicación Express
 
-// Configurar nombre y correo de Git
-git.addConfig('user.name', 'cibervengadores');
-git.addConfig('user.email', 'cibervengadores@proton.me');
+// Configurar globalmente el nombre y el correo de Git
+await git.addConfig('user.name', 'cibervengadores', { '--global': null });
+await git.addConfig('user.email', 'cibervengadores@proton.me', { '--global': null });
 
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
