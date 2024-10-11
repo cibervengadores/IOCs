@@ -44,7 +44,7 @@ const isAllowedChat = (ctx) => {
         return ALLOWED_GROUP_IDS.includes(chatId);
     }
 
-    return false;
+    return false; // Chats no permitidos
 };
 
 // Función para añadir la petición al archivo peticiones.adoc
@@ -74,8 +74,9 @@ const addToFile = async (petition) => {
     }
 };
 
-// Manejo del comando /chatp y respuesta a los mensajes
+// Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
+    // Verificar si el chat es permitido antes de responder al comando
     if (!isAllowedChat(ctx)) {
         ctx.reply('⚠️ No tienes permiso para usar este bot aquí.');
         return;
@@ -85,31 +86,37 @@ bot.command('chatp', async (ctx) => {
     
     // Almacenar el ID del mensaje para futuras respuestas
     lastChatpMessageId = message.message_id;
+});
 
-    // Escuchar solo respuestas al mensaje específico
-    bot.on('text', async (ctx) => {
-        const isReply = ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === lastChatpMessageId;
+// Escuchar solo respuestas al mensaje específico
+bot.on('text', async (ctx) => {
+    // Verificar si el chat es permitido antes de procesar el mensaje
+    if (!isAllowedChat(ctx)) {
+        return; // Ignorar mensajes de chats no permitidos
+    }
 
-        if (!isReply) {
-            return; // Ignorar mensajes que no son respuestas al último mensaje de /chatp
-        }
+    // Asegurarse de que solo se responde a mensajes específicos
+    const isReply = ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === lastChatpMessageId;
 
-        const input = ctx.message.text.split(',');
+    if (!isReply) {
+        return; // Ignorar mensajes que no son respuestas al último mensaje de /chatp
+    }
 
-        if (input.length === 4) {
-            const petitionData = {
-                hash: input[0].trim(),
-                archivo: input[1].trim(),
-                deteccion: input[2].trim(),
-                descripcion: input[3].trim(),
-            };
+    const input = ctx.message.text.split(',');
 
-            await addToFile(petitionData);
-            ctx.reply(`✅ Indicador de compromiso guardado:\n\n1️⃣ Hash: ${petitionData.hash}\n2️⃣ Nombre del archivo: ${petitionData.archivo}\n3️⃣ Detección: ${petitionData.deteccion}\n4️⃣ Descripción: ${petitionData.descripcion}\n\n✅ Indicador de compromiso guardado exitosamente! 🎉\n🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
-        } else {
-            ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). ⚠️ Responde al mensaje principal ⚠️');
-        }
-    });
+    if (input.length === 4) {
+        const petitionData = {
+            hash: input[0].trim(),
+            archivo: input[1].trim(),
+            deteccion: input[2].trim(),
+            descripcion: input[3].trim(),
+        };
+
+        await addToFile(petitionData);
+        ctx.reply(`✅ Indicador de compromiso guardado:\n\n1️⃣ Hash: ${petitionData.hash}\n2️⃣ Nombre del archivo: ${petitionData.archivo}\n3️⃣ Detección: ${petitionData.deteccion}\n4️⃣ Descripción: ${petitionData.descripcion}\n\n✅ Indicador de compromiso guardado exitosamente! 🎉\n🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
+    } else {
+        ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). ⚠️ Responde al mensaje principal ⚠️');
+    }
 });
 
 // Iniciar el servidor Express
