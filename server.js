@@ -19,7 +19,7 @@ const git = simpleGit();
 const GITHUB_REPO = process.env.MY_GITHUB_REPO;
 const GITHUB_USER = process.env.MY_GITHUB_USER;
 const GITHUB_TOKEN = process.env.MY_GITHUB_TOKEN; // Asegúrate de que también existe
-const FILE_PATH = 'peticiones.md';
+const FILE_PATH = 'peticiones.adoc'; // Cambiado a .adoc
 
 const app = express(); // Inicializar la aplicación Express
 
@@ -29,16 +29,16 @@ const configureGit = async () => {
     await git.addConfig('user.email', 'cibervengadores@proton.me');
 };
 
-// Función para añadir la petición al archivo peticiones.md
+// Función para añadir la petición al archivo peticiones.adoc
 const addToFile = async (petition) => {
     try {
         // Asegurarse de que el archivo existe o crearlo
         if (!fs.existsSync(FILE_PATH)) {
-            fs.writeFileSync(FILE_PATH, '| Hash | Archivo | Detección | Descripción |\n|------|---------|-----------|-------------|\n');
+            fs.writeFileSync(FILE_PATH, `== Peticiones\n\n[cols="1,1,1,1"]\n|===\n| Hash | Archivo | Detección | Descripción\n`);
         }
 
         // Añadir la petición en formato de tabla
-        const formattedPetition = `| ${petition.hash} | ${petition.archivo} | ${petition.deteccion} | ${petition.descripcion} |\n`;
+        const formattedPetition = `| ${petition.hash} | ${petition.archivo} | ${petition.deteccion} | ${petition.descripcion}\n`;
         fs.appendFileSync(FILE_PATH, formattedPetition);
         console.log('Petición añadida:', formattedPetition);
 
@@ -91,7 +91,7 @@ bot.command('chatp', async (ctx) => {
 
             // Almacenar la petición
             await addToFile(petitionData);
-            ctx.reply(`Petición guardada en https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.md`);
+            ctx.reply(`Petición guardada en https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
             
             // Reiniciar los datos después de completar la petición
             petitionData.hash = '';
