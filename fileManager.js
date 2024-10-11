@@ -20,7 +20,7 @@ export const addToFile = async (petition) => {
         // Añadir la petición en formato de tabla
         const formattedPetition = `| ${petition.hash} | ${petition.archivo} | ${petition.deteccion} | ${petition.descripcion}\n`;
         fs.appendFileSync(FILE_PATH, formattedPetition);
-        console.log('Petición añadida:', formattedPetition);
+        console.log('✅ Petición añadida:', formattedPetition);
 
         const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
 
@@ -29,18 +29,18 @@ export const addToFile = async (petition) => {
         await git.commit(`Add petition: ${petition.hash}`);
 
         // Hacer push forzado
-        console.log('Intentando hacer push forzado.');
+        console.log('🔄 Intentando hacer push forzado.');
         await git.push(gitUrl, 'main', { '--force': null });
-        console.log('Push forzado realizado.');
+        console.log('✅ Push forzado realizado.');
     } catch (error) {
         // Manejo de errores
         if (error.message.includes('index.lock')) {
-            console.error('Error: El archivo index.lock existe. Eliminarlo para continuar.');
+            console.error('⚠️ Error: El archivo index.lock existe. Eliminarlo para continuar.');
             // Eliminar el archivo de bloqueo
             fs.unlinkSync('.git/index.lock'); // Eliminar el archivo index.lock
-            console.log('Archivo index.lock eliminado. Intenta nuevamente.');
+            console.log('🗑️ Archivo index.lock eliminado. Intenta nuevamente.');
         } else {
-            console.error('Error guardando en GitHub:', error.message);
+            console.error('❌ Error guardando en GitHub:', error.message);
         }
     }
 };

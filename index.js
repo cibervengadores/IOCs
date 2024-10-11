@@ -12,37 +12,33 @@ bot.command('chatp', async (ctx) => {
     // Reiniciar los datos de la petición
     const petitionData = { hash: '', archivo: '', deteccion: '', descripcion: '' };
     
-    ctx.reply('Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): Hash, Nombre del archivo, Detección, Descripción.');
+    ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): 📝 **Hash**, **Nombre del archivo**, **Detección**, **Descripción**.');
     
     // Escuchar la respuesta del usuario
     bot.on('text', async (ctx) => {
         const input = ctx.message.text.split(',');
-        
+
         if (input.length === 4) {
-            // Asignar valores a petitionData
-            petitionData.hash = input[0].trim();
-            petitionData.archivo = input[1].trim();
-            petitionData.deteccion = input[2].trim();
-            petitionData.descripcion = input[3].trim();
+            // Crear el objeto petitionData a partir de la entrada del usuario
+            const petitionData = {
+                hash: input[0].trim(),
+                archivo: input[1].trim(),
+                deteccion: input[2].trim(),
+                descripcion: input[3].trim(),
+            };
 
             // Almacenar la petición
             await addToFile(petitionData);
-            ctx.reply(`Petición guardada en https://github.com/${process.env.MY_GITHUB_USER}/${process.env.MY_GITHUB_REPO}/blob/main/peticiones.adoc`);
-            
-            // Reiniciar los datos después de completar la petición
-            petitionData.hash = '';
-            petitionData.archivo = '';
-            petitionData.deteccion = '';
-            petitionData.descripcion = '';
+            ctx.reply(`✅ **Petición guardada exitosamente!** 🎉\n🔗 **Consulta aquí:** https://github.com/${process.env.MY_GITHUB_USER}/${process.env.MY_GITHUB_REPO}/blob/main/peticiones.adoc`);
         } else {
-            ctx.reply('Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
+            ctx.reply('⚠️ **Error:** Asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). 🛑');
         }
     });
 });
 
 // Lanzar el bot
 bot.launch().then(() => {
-    console.log('Bot iniciado y escuchando comandos.');
+    console.log('🤖 Bot iniciado y escuchando comandos.');
 }).catch((error) => {
-    console.error('Error al lanzar el bot:', error);
+    console.error('❌ Error al lanzar el bot:', error);
 });
