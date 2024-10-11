@@ -34,18 +34,19 @@ const addToFile = async (petition) => {
     try {
         // Asegurarse de que el archivo existe o crearlo
         if (!fs.existsSync(FILE_PATH)) {
-            fs.writeFileSync(FILE_PATH, '');
+            fs.writeFileSync(FILE_PATH, '| Hash | Archivo | Detección | Descripción |\n|------|---------|-----------|-------------|\n');
         }
 
-        // Añadir la petición al archivo
-        fs.appendFileSync(FILE_PATH, `${petition}\n`);
-        console.log('Petición añadida:', petition);
+        // Añadir la petición en formato de tabla
+        const formattedPetition = `| ${petition.hash} | ${petition.archivo} | ${petition.deteccion} | ${petition.descripcion} |\n`;
+        fs.appendFileSync(FILE_PATH, formattedPetition);
+        console.log('Petición añadida:', formattedPetition);
 
         const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
 
         // Añadir el archivo y hacer commit
         await git.add(FILE_PATH);
-        await git.commit(`Add petition: ${petition}`);
+        await git.commit(`Add petition: ${petition.hash}`);
 
         // Hacer push forzado
         console.log('Intentando hacer push forzado.');
@@ -66,18 +67,39 @@ const addToFile = async (petition) => {
 
 // Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
-    try {
-        const petition = ctx.message.text.replace('/chatp', '').trim();
-        if (petition) {
-            await addToFile(petition);
+    // Reiniciar los datos de la petición
+    const petitionData = { hash: '', archivo: '', deteccion: '', descripcion: '' };
+    
+    ctx.reply('Por favor, proporciona los siguientes detalles para tu petición:');
+    
+    // Solicitar hash
+    ctx.reply('1. Hash:');
+    
+    // Escuchar la respuesta del usuario
+    bot.on('text', async (ctx) => {
+        if (!petitionData.hash) {
+            petitionData.hash = ctx.message.text;
+            ctx.reply('2. Archivo:');
+        } else if (!petitionData.archivo) {
+            petitionData.archivo = ctx.message.text;
+            ctx.reply('3. Detección:');
+        } else if (!petitionData.deteccion) {
+            petitionData.deteccion = ctx.message.text;
+            ctx.reply('4. Descripción:');
+        } else if (!petitionData.descripcion) {
+            petitionData.descripcion = ctx.message.text;
+
+            // Almacenar la petición
+            await addToFile(petitionData);
             ctx.reply(`Petición guardada en https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.md`);
-        } else {
-            ctx.reply('Por favor, proporciona una petición después del comando.');
+            
+            // Reiniciar los datos después de completar la petición
+            petitionData.hash = '';
+            petitionData.archivo = '';
+            petitionData.deteccion = '';
+            petitionData.descripcion = '';
         }
-    } catch (error) {
-        console.error('Error al procesar el comando /chatp:', error);
-        ctx.reply('Ocurrió un error al procesar tu petición. Intenta de nuevo más tarde.');
-    }
+    });
 });
 
 // Configurar el webhook de Telegram
