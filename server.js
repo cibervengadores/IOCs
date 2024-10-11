@@ -1,8 +1,10 @@
-const { Telegraf } = require('telegraf');
-const simpleGit = require('simple-git');
-const fs = require('fs');
-const express = require('express'); // Importar Express
-require('dotenv').config();
+import { Telegraf } from 'telegraf';
+import simpleGit from 'simple-git';
+import fs from 'fs';
+import express from 'express';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const git = simpleGit();
@@ -15,8 +17,8 @@ const FILE_PATH = 'peticiones.md';
 const app = express(); // Inicializar la aplicación Express
 
 // Configurar globalmente el nombre y el correo de Git
-await git.addConfig('user.name', 'cibervengadores', { '--global': null });
-await git.addConfig('user.email', 'cibervengadores@proton.me', { '--global': null });
+await git.addConfig('user.name', 'cibervengadores');
+await git.addConfig('user.email', 'cibervengadores@proton.me');
 
 // Función para añadir la petición al archivo peticiones.md
 const addToFile = async (petition) => {
