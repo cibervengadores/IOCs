@@ -1,31 +1,19 @@
-name: Deploy Telegram Bot
-
-on:
-  push:
-    branches:
-      - main  # Cambia esto si usas otra rama
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Cambia a la versión de Node.js que necesites
+          node-version: '16' # o la versión de Node que estés utilizando
 
       - name: Install dependencies
         run: npm install
 
-      - name: Start bot
+      - name: Run application
         env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}   # Asegúrate de configurar estos secretos
-          GITHUB_REPO: ${{ secrets.GITHUB_REPO }}
-          GITHUB_USER: ${{ secrets.GITHUB_USER }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Agrega cualquier otra variable de entorno que necesites
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: node server.js
