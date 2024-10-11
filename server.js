@@ -65,39 +65,38 @@ const addToFile = async (petition) => {
     }
 };
 
-// Variable para controlar cuándo procesar la respuesta del usuario
-let awaitingResponse = false;
-
 // Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
-    awaitingResponse = true; // Activamos el indicador de espera de respuesta
-    ctx.reply(`✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): 
+    // Enviar mensaje con instrucción y capturar el message_id
+    const sentMessage = await ctx.reply(`✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): 
 1️⃣ Hash, 
 2️⃣ Nombre del archivo, 
 3️⃣ Detección, 
-4️⃣ Descripción.`);
-});
+4️⃣ Descripción. Responde a este mensaje.`);
 
-// Solo procesar texto si se está esperando una respuesta
-bot.on('text', async (ctx) => {
-    if (!awaitingResponse) return; // Ignorar si no se está esperando respuesta
+    // Guardar el ID del mensaje que el bot ha enviado para esperar respuesta
+    const originalMessageId = sentMessage.message_id;
 
-    const input = ctx.message.text.split(',');
+    // Capturar las respuestas de los usuarios
+    bot.on('text', async (ctx) => {
+        // Comprobar si el mensaje es una respuesta al mensaje original del bot
+        if (ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === originalMessageId) {
+            const input = ctx.message.text.split(',');
 
-    if (input.length === 4) {
-        // Crear el objeto petitionData a partir de la entrada del usuario
-        const petitionData = {
-            hash: input[0].trim(),
-            archivo: input[1].trim(),
-            deteccion: input[2].trim(),
-            descripcion: input[3].trim(),
-        };
+            if (input.length === 4) {
+                // Crear el objeto petitionData a partir de la entrada del usuario
+                const petitionData = {
+                    hash: input[0].trim(),
+                    archivo: input[1].trim(),
+                    deteccion: input[2].trim(),
+                    descripcion: input[3].trim(),
+                };
 
-        // Almacenar la petición
-        await addToFile(petitionData);
-        
-        // Enviar la respuesta y desactivar el modo de espera
-        ctx.reply(`✅ Indicador de compromiso guardado:
+                // Almacenar la petición
+                await addToFile(petitionData);
+
+                // Enviar la respuesta al usuario
+                ctx.reply(`✅ Indicador de compromiso guardado:
 
 1️⃣ Hash: ${petitionData.hash}
 2️⃣ Nombre del archivo: ${petitionData.archivo}
@@ -106,11 +105,14 @@ bot.on('text', async (ctx) => {
 
 ✅ Indicador de compromiso guardada exitosamente! 🎉
 🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
-        
-        awaitingResponse = false; // Desactivar la espera de respuesta
-    } else {
-        ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
-    }
+            } else {
+                ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
+            }
+        } else {
+            // Ignorar si el mensaje no es una respuesta al mensaje original del bot
+            console.log('Mensaje ignorado porque no es una respuesta al mensaje original.');
+        }
+    });
 });
 
 // Configurar el webhook de Telegram
