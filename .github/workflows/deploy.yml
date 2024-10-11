@@ -6,25 +6,25 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'  # Cambia esto según la versión que estés usando
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14' # Cambia esto según la versión de Node.js que estés usando
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: Run your app
-        env:
-          BOT_TOKEN: ${{ secrets.MY_BOT_TOKEN }}
-          GITHUB_USER: ${{ secrets.MY_GITHUB_USER }}
-          GITHUB_REPO: ${{ secrets.MY_GITHUB_REPO }}
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-        run: npm start
+    - name: Start the application
+      env: # Aquí se definen las variables de entorno
+        MY_BOT_TOKEN: ${{ secrets.MY_BOT_TOKEN }}
+        MY_GITHUB_USER: ${{ secrets.MY_GITHUB_USER }}
+        MY_GITHUB_REPO: ${{ secrets.MY_GITHUB_REPO }}
+        MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+      run: npm start
