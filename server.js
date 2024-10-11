@@ -78,7 +78,7 @@ bot.command('chatp', async (ctx) => {
         return;
     }
 
-    const message = await ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios):\n1️⃣ Hash,\n2️⃣ Nombre del archivo,\n3️⃣ Detección,\n4️⃣ Descripción. Res\n Responde a este mensaje.');⚠️..
+    const message = await ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios):\n1️⃣ Hash,\n2️⃣ Nombre del archivo,\n3️⃣ Detección,\n4️⃣ Descripción.\n⚠️ Responde a este mensaje ⚠️');
 
     // Esperar a que el usuario responda al mensaje
     bot.on('text', async (ctx) => {
