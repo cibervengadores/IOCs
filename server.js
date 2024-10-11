@@ -88,33 +88,36 @@ bot.command('chatp', async (ctx) => {
     
     // Escuchar la respuesta del usuario
     bot.on('text', async (ctx) => {
-        // Solo continuar si la respuesta es a este mensaje
-        if (!ctx.message.reply_to_message || ctx.message.reply_to_message.text.includes('✨ Por favor, proporciona')) {
-            const input = ctx.message.text.split(',');
+    // Verificar si el mensaje es una respuesta a otro mensaje
+    const isReply = ctx.message.reply_to_message && ctx.message.reply_to_message.text;
+    
+    // Si no es una respuesta o el texto no incluye el mensaje de "proporciona"
+    if (!isReply || !ctx.message.reply_to_message.text.includes('✨ Por favor, proporciona')) {
+        ctx.reply('⚠️ Responde a la solicitud de detalles.');
+        return;
+    }
 
-            if (input.length === 4) {
-                // Crear el objeto petitionData a partir de la entrada del usuario
-                const petitionData = {
-                    hash: input[0].trim(),
-                    archivo: input[1].trim(),
-                    deteccion: input[2].trim(),
-                    descripcion: input[3].trim(),
-                };
+    // Continuar con el procesamiento solo si es una respuesta correcta
+    const input = ctx.message.text.split(',');
 
-                // Almacenar la petición
-                await addToFile(petitionData);
-                ctx.reply(`✅ **Indicador de compromiso guardado:**
-                \n1️⃣ **Hash:** ${petitionData.hash}
-                \n2️⃣ **Nombre del archivo:** ${petitionData.archivo}
-                \n3️⃣ **Detección:** ${petitionData.deteccion}
-                \n4️⃣ **Descripción:** ${petitionData.descripcion}
-                \n\n✅ **Indicador de compromiso guardado exitosamente!** 🎉
-                \n🔗 **Consulta aquí:** https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
-            } else {
-                ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). Responde a este mensaje');
-            }
-        }
-    });
+    // Validar si el usuario proporcionó cuatro valores
+    if (input.length === 4) {
+        // Crear el objeto petitionData a partir de la entrada del usuario
+        const petitionData = {
+            hash: input[0].trim(),
+            archivo: input[1].trim(),
+            deteccion: input[2].trim(),
+            descripcion: input[3].trim(),
+        };
+
+        // Almacenar la petición
+        await addToFile(petitionData);
+        ctx.reply(`✅ Indicador de compromiso guardado:\n\n1️⃣ Hash: ${petitionData.hash}\n2️⃣ Nombre del archivo: ${petitionData.archivo}\n3️⃣ Detección: ${petitionData.deteccion}\n4️⃣ Descripción: ${petitionData.descripcion}\n\n✅ Indicador de compromiso guardado exitosamente! 🎉\n🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
+    } else {
+        ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
+    }
+});
+
 });
 
 // Configurar el webhook de Telegram
