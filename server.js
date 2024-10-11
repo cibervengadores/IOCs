@@ -21,6 +21,9 @@ const app = express();
 const ALLOWED_GROUP_IDS = ['-1002063977009', '-1002451309597']; // Reemplaza con los IDs de los grupos permitidos
 const MY_USER_ID = '6303550179'; // Reemplaza con tu propio ID de usuario
 
+// Variable para almacenar el ID del último mensaje de /chatp
+let lastChatpMessageId = null;
+
 // Función para configurar Git
 const configureGit = async () => {
     await git.addConfig('user.name', 'cibervengadores');
@@ -79,13 +82,16 @@ bot.command('chatp', async (ctx) => {
     }
 
     const message = await ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios):\n1️⃣ Hash,\n2️⃣ Nombre del archivo,\n3️⃣ Detección,\n4️⃣ Descripción.\n⚠️ Responde a este mensaje ⚠️');
+    
+    // Almacenar el ID del mensaje para futuras respuestas
+    lastChatpMessageId = message.message_id;
 
     // Escuchar solo respuestas al mensaje específico
     bot.on('text', async (ctx) => {
-        const isReply = ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === message.message_id;
+        const isReply = ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === lastChatpMessageId;
 
         if (!isReply) {
-            return; // Ignorar mensajes que no son respuestas a este bot
+            return; // Ignorar mensajes que no son respuestas al último mensaje de /chatp
         }
 
         const input = ctx.message.text.split(',');
