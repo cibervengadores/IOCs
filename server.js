@@ -23,6 +23,13 @@ const FILE_PATH = 'peticiones.adoc'; // Cambiado a .adoc
 
 const app = express(); // Inicializar la aplicación Express
 
+// Lista de grupos permitidos (IDs de los grupos que pueden usar el bot)
+const ALLOWED_GROUPS = [
+    /* Añade los IDs de los grupos permitidos aquí */
+    -1002451309597,
+    -1002063977009
+];
+
 // Función para configurar Git
 const configureGit = async () => {
     await git.addConfig('user.name', 'cibervengadores');
@@ -65,24 +72,24 @@ const addToFile = async (petition) => {
     }
 };
 
+// Función para verificar si el bot está en un grupo permitido
+const isGroupAllowed = (ctx) => {
+    const chatId = ctx.chat.id;
+    return ALLOWED_GROUPS.includes(chatId);
+};
+
 // Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
-    // Enviar mensaje con instrucción y capturar el message_id
-    const sentMessage = await ctx.reply(`✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): 
-1️⃣ Hash, 
-2️⃣ Nombre del archivo, 
-3️⃣ Detección, 
-4️⃣ Descripción. Responde a este mensaje.`);
-
-    // Guardar el ID del mensaje que el bot ha enviado para esperar respuesta
-    let originalMessageId = sentMessage.message_id;
-    let warningMessageId = null; // Para el mensaje de advertencia
-
-    // Capturar las respuestas de los usuarios
+    if (!isGroupAllowed(ctx)) {
+        ctx.reply('🚫 Este bot solo está disponible en grupos específicos.');
+        return;
+    }
+    ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios):\n1️⃣ Hash,\n2️⃣ Nombre del archivo,\n3️⃣ Detección,\n4️⃣ Descripción. Responde a este mensaje');
+    
+    // Escuchar la respuesta del usuario
     bot.on('text', async (ctx) => {
-        // Comprobar si el mensaje es una respuesta al mensaje original del bot o al de advertencia
-        if (ctx.message.reply_to_message && 
-            (ctx.message.reply_to_message.message_id === originalMessageId || ctx.message.reply_to_message.message_id === warningMessageId)) {
+        // Solo continuar si la respuesta es a este mensaje
+        if (!ctx.message.reply_to_message || ctx.message.reply_to_message.text.includes('✨ Por favor, proporciona')) {
             const input = ctx.message.text.split(',');
 
             if (input.length === 4) {
@@ -96,25 +103,16 @@ bot.command('chatp', async (ctx) => {
 
                 // Almacenar la petición
                 await addToFile(petitionData);
-
-                // Enviar la respuesta al usuario
-                ctx.reply(`✅ Indicador de compromiso guardado:
-
-1️⃣ Hash: ${petitionData.hash}
-2️⃣ Nombre del archivo: ${petitionData.archivo}
-3️⃣ Detección: ${petitionData.deteccion}
-4️⃣ Descripción: ${petitionData.descripcion}
-
-✅ Indicador de compromiso guardada exitosamente! 🎉
-🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
+                ctx.reply(`✅ **Indicador de compromiso guardado:**
+                \n1️⃣ **Hash:** ${petitionData.hash}
+                \n2️⃣ **Nombre del archivo:** ${petitionData.archivo}
+                \n3️⃣ **Detección:** ${petitionData.deteccion}
+                \n4️⃣ **Descripción:** ${petitionData.descripcion}
+                \n\n✅ **Indicador de compromiso guardado exitosamente!** 🎉
+                \n🔗 **Consulta aquí:** https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
             } else {
-                // Enviar mensaje de advertencia y guardar el message_id
-                const warningMessage = await ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). Responde a este mensaje.');
-                warningMessageId = warningMessage.message_id; // Guardar el message_id del mensaje de advertencia
+                ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). Responde a este mensaje');
             }
-        } else {
-            // Ignorar si el mensaje no es una respuesta a los mensajes esperados
-            console.log('Mensaje ignorado porque no es una respuesta al mensaje original o de advertencia.');
         }
     });
 });
