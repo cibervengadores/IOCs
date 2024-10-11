@@ -13,7 +13,7 @@ const git = simpleGit();
 const GITHUB_REPO = process.env.MY_GITHUB_REPO;
 const GITHUB_USER = process.env.MY_GITHUB_USER;
 const GITHUB_TOKEN = process.env.MY_GITHUB_TOKEN;
-const FILE_PATH = 'peticiones.adoc'; 
+const FILE_PATH = 'peticiones.adoc';
 
 const app = express(); 
 
@@ -80,9 +80,8 @@ bot.command('chatp', async (ctx) => {
 
     const message = await ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios):\n1️⃣ Hash,\n2️⃣ Nombre del archivo,\n3️⃣ Detección,\n4️⃣ Descripción.\n⚠️ Responde a este mensaje ⚠️');
 
-    // Esperar a que el usuario responda al mensaje
+    // Escuchar solo respuestas al mensaje específico
     bot.on('text', async (ctx) => {
-        // Verificar si es una respuesta al mensaje específico
         const isReply = ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === message.message_id;
 
         if (!isReply) {
