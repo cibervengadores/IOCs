@@ -65,30 +65,39 @@ const addToFile = async (petition) => {
     }
 };
 
+// Variable para controlar cuándo procesar la respuesta del usuario
+let awaitingResponse = false;
+
 // Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
+    awaitingResponse = true; // Activamos el indicador de espera de respuesta
     ctx.reply(`✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): 
 1️⃣ Hash, 
 2️⃣ Nombre del archivo, 
 3️⃣ Detección, 
 4️⃣ Descripción.`);
-    
-    // Escuchar la respuesta del usuario
-    bot.on('text', async (ctx) => {
-        const input = ctx.message.text.split(',');
+});
 
-        if (input.length === 4) {
-            // Crear el objeto petitionData a partir de la entrada del usuario
-            const petitionData = {
-                hash: input[0].trim(),
-                archivo: input[1].trim(),
-                deteccion: input[2].trim(),
-                descripcion: input[3].trim(),
-            };
+// Solo procesar texto si se está esperando una respuesta
+bot.on('text', async (ctx) => {
+    if (!awaitingResponse) return; // Ignorar si no se está esperando respuesta
 
-            // Almacenar la petición
-            await addToFile(petitionData);
-            ctx.reply(`✅ Indicador de compromiso guardado:
+    const input = ctx.message.text.split(',');
+
+    if (input.length === 4) {
+        // Crear el objeto petitionData a partir de la entrada del usuario
+        const petitionData = {
+            hash: input[0].trim(),
+            archivo: input[1].trim(),
+            deteccion: input[2].trim(),
+            descripcion: input[3].trim(),
+        };
+
+        // Almacenar la petición
+        await addToFile(petitionData);
+        
+        // Enviar la respuesta y desactivar el modo de espera
+        ctx.reply(`✅ Indicador de compromiso guardado:
 
 1️⃣ Hash: ${petitionData.hash}
 2️⃣ Nombre del archivo: ${petitionData.archivo}
@@ -97,10 +106,11 @@ bot.command('chatp', async (ctx) => {
 
 ✅ Indicador de compromiso guardada exitosamente! 🎉
 🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
-        } else {
-            ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
-        }
-    });
+        
+        awaitingResponse = false; // Desactivar la espera de respuesta
+    } else {
+        ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
+    }
 });
 
 // Configurar el webhook de Telegram
