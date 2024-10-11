@@ -82,11 +82,11 @@ bot.command('chatp', async (ctx) => {
 
     // Esperar a que el usuario responda al mensaje
     bot.on('text', async (ctx) => {
+        // Verificar si es una respuesta al mensaje específico
         const isReply = ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === message.message_id;
 
         if (!isReply) {
-            ctx.reply('⚠️ Responde a la solicitud de detalles.');
-            return;
+            return; // Ignorar mensajes que no son respuestas a este bot
         }
 
         const input = ctx.message.text.split(',');
