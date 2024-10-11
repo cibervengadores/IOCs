@@ -75,12 +75,14 @@ bot.command('chatp', async (ctx) => {
 4️⃣ Descripción. Responde a este mensaje.`);
 
     // Guardar el ID del mensaje que el bot ha enviado para esperar respuesta
-    const originalMessageId = sentMessage.message_id;
+    let originalMessageId = sentMessage.message_id;
+    let warningMessageId = null; // Para el mensaje de advertencia
 
     // Capturar las respuestas de los usuarios
     bot.on('text', async (ctx) => {
-        // Comprobar si el mensaje es una respuesta al mensaje original del bot
-        if (ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === originalMessageId) {
+        // Comprobar si el mensaje es una respuesta al mensaje original del bot o al de advertencia
+        if (ctx.message.reply_to_message && 
+            (ctx.message.reply_to_message.message_id === originalMessageId || ctx.message.reply_to_message.message_id === warningMessageId)) {
             const input = ctx.message.text.split(',');
 
             if (input.length === 4) {
@@ -106,11 +108,13 @@ bot.command('chatp', async (ctx) => {
 ✅ Indicador de compromiso guardada exitosamente! 🎉
 🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
             } else {
-                ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
+                // Enviar mensaje de advertencia y guardar el message_id
+                const warningMessage = await ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). Responde a este mensaje.');
+                warningMessageId = warningMessage.message_id; // Guardar el message_id del mensaje de advertencia
             }
         } else {
-            // Ignorar si el mensaje no es una respuesta al mensaje original del bot
-            console.log('Mensaje ignorado porque no es una respuesta al mensaje original.');
+            // Ignorar si el mensaje no es una respuesta a los mensajes esperados
+            console.log('Mensaje ignorado porque no es una respuesta al mensaje original o de advertencia.');
         }
     });
 });
