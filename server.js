@@ -67,37 +67,26 @@ const addToFile = async (petition) => {
 
 // Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
-    // Reiniciar los datos de la petición
-    const petitionData = { hash: '', archivo: '', deteccion: '', descripcion: '' };
-    
-    ctx.reply('Por favor, proporciona los siguientes detalles para tu petición:');
-    
-    // Solicitar hash
-    ctx.reply('1. Hash:');
+    ctx.reply('Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): Hash, Nombre del archivo, Detección, Descripción.');
     
     // Escuchar la respuesta del usuario
     bot.on('text', async (ctx) => {
-        if (!petitionData.hash) {
-            petitionData.hash = ctx.message.text;
-            ctx.reply('2. Archivo:');
-        } else if (!petitionData.archivo) {
-            petitionData.archivo = ctx.message.text;
-            ctx.reply('3. Detección:');
-        } else if (!petitionData.deteccion) {
-            petitionData.deteccion = ctx.message.text;
-            ctx.reply('4. Descripción:');
-        } else if (!petitionData.descripcion) {
-            petitionData.descripcion = ctx.message.text;
+        const input = ctx.message.text.split(',');
+
+        if (input.length === 4) {
+            // Crear el objeto petitionData a partir de la entrada del usuario
+            const petitionData = {
+                hash: input[0].trim(),
+                archivo: input[1].trim(),
+                deteccion: input[2].trim(),
+                descripcion: input[3].trim(),
+            };
 
             // Almacenar la petición
             await addToFile(petitionData);
             ctx.reply(`Petición guardada en https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
-            
-            // Reiniciar los datos después de completar la petición
-            petitionData.hash = '';
-            petitionData.archivo = '';
-            petitionData.deteccion = '';
-            petitionData.descripcion = '';
+        } else {
+            ctx.reply('Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
         }
     });
 });

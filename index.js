@@ -12,24 +12,18 @@ bot.command('chatp', async (ctx) => {
     // Reiniciar los datos de la petición
     const petitionData = { hash: '', archivo: '', deteccion: '', descripcion: '' };
     
-    ctx.reply('Por favor, proporciona los siguientes detalles para tu petición:');
-    
-    // Solicitar hash
-    ctx.reply('1. Hash:');
+    ctx.reply('Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios): Hash, Nombre del archivo, Detección, Descripción.');
     
     // Escuchar la respuesta del usuario
     bot.on('text', async (ctx) => {
-        if (!petitionData.hash) {
-            petitionData.hash = ctx.message.text;
-            ctx.reply('2. Archivo:');
-        } else if (!petitionData.archivo) {
-            petitionData.archivo = ctx.message.text;
-            ctx.reply('3. Detección:');
-        } else if (!petitionData.deteccion) {
-            petitionData.deteccion = ctx.message.text;
-            ctx.reply('4. Descripción:');
-        } else if (!petitionData.descripcion) {
-            petitionData.descripcion = ctx.message.text;
+        const input = ctx.message.text.split(',');
+        
+        if (input.length === 4) {
+            // Asignar valores a petitionData
+            petitionData.hash = input[0].trim();
+            petitionData.archivo = input[1].trim();
+            petitionData.deteccion = input[2].trim();
+            petitionData.descripcion = input[3].trim();
 
             // Almacenar la petición
             await addToFile(petitionData);
@@ -40,6 +34,8 @@ bot.command('chatp', async (ctx) => {
             petitionData.archivo = '';
             petitionData.deteccion = '';
             petitionData.descripcion = '';
+        } else {
+            ctx.reply('Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios).');
         }
     });
 });
