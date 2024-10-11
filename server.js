@@ -14,10 +14,10 @@ console.log('GITHUB_REPO:', process.env.GITHUB_REPO);
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const git = simpleGit();
 
-const GITHUB_REPO = process.env.GITHUB_REPO;
-const GITHUB_USER = process.env.GITHUB_USER;
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const FILE_PATH = 'peticiones.md';
+const GITHUB_REPO = process.env.GITHUB_REPO; // Repositorio de GitHub
+const GITHUB_USER = process.env.GITHUB_USER; // Usuario de GitHub
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // Token de GitHub
+const FILE_PATH = 'peticiones.md'; // Archivo donde se guardarán las peticiones
 
 const app = express(); // Inicializar la aplicación Express
 
@@ -54,8 +54,12 @@ const addToFile = async (petition) => {
         if (error.message.includes('index.lock')) {
             console.error('Error: El archivo index.lock existe. Eliminarlo para continuar.');
             // Eliminar el archivo de bloqueo
-            fs.unlinkSync('.git/index.lock'); // Eliminar el archivo index.lock
-            console.log('Archivo index.lock eliminado. Intenta nuevamente.');
+            try {
+                fs.unlinkSync('.git/index.lock'); // Eliminar el archivo index.lock
+                console.log('Archivo index.lock eliminado. Intenta nuevamente.');
+            } catch (unlinkError) {
+                console.error('Error al eliminar index.lock:', unlinkError.message);
+            }
         } else {
             console.error('Error guardando en GitHub:', error.message);
         }
