@@ -9,39 +9,40 @@ const bot = new Telegraf(process.env.MY_BOT_TOKEN);
 
 // Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
-    // Reiniciar los datos de la petición
-    const petitionData = { hash: '', archivo: '', deteccion: '', descripcion: '' };
-    
-    ctx.reply('Por favor, proporciona los siguientes detalles para tu petición:');
-    
-    // Solicitar hash
-    ctx.reply('1. Hash:');
-    
-    // Escuchar la respuesta del usuario
-    bot.on('text', async (ctx) => {
-        if (!petitionData.hash) {
-            petitionData.hash = ctx.message.text;
-            ctx.reply('2. Archivo:');
-        } else if (!petitionData.archivo) {
-            petitionData.archivo = ctx.message.text;
-            ctx.reply('3. Detección:');
-        } else if (!petitionData.deteccion) {
-            petitionData.deteccion = ctx.message.text;
-            ctx.reply('4. Descripción:');
-        } else if (!petitionData.descripcion) {
-            petitionData.descripcion = ctx.message.text;
+    // Solicitar detalles en un solo mensaje
+    ctx.reply('Por favor, proporciona los siguientes detalles separados por comas (sin espacios): Hash, Nombre del archivo, Detección, Descripción.');
+});
 
-            // Almacenar la petición
-            await addToFile(petitionData);
-            ctx.reply(`Petición guardada en https://github.com/${process.env.MY_GITHUB_USER}/${process.env.MY_GITHUB_REPO}/blob/main/peticiones.adoc`);
-            
-            // Reiniciar los datos después de completar la petición
-            petitionData.hash = '';
-            petitionData.archivo = '';
-            petitionData.deteccion = '';
-            petitionData.descripcion = '';
-        }
-    });
+// Escuchar la respuesta del usuario
+bot.on('text', async (ctx) => {
+    const input = ctx.message.text;
+
+    // Separar los datos por comas
+    const data = input.split(',').map(item => item.trim());
+
+    // Validar que se hayan proporcionado al menos 4 elementos
+    if (data.length < 4) {
+        ctx.reply('Por favor, asegúrate de proporcionar todos los detalles: Hash, Nombre del archivo, Detección, Descripción. Si falta algún dato, se representará como un punto.');
+        return;
+    }
+
+    // Asignar los datos a variables, usando '.' si falta alguno
+    const hash = data[0] || '.';
+    const archivo = data[1] || '.';
+    const deteccion = data[2] || '.';
+    const descripcion = data[3] || '.';
+
+    // Crear el objeto de la petición
+    const petitionData = {
+        hash,
+        archivo,
+        deteccion,
+        descripcion
+    };
+
+    // Almacenar la petición
+    await addToFile(petitionData);
+    ctx.reply(`Petición guardada en https://github.com/${process.env.MY_GITHUB_USER}/${process.env.MY_GITHUB_REPO}/blob/main/peticiones.adoc`);
 });
 
 // Lanzar el bot
