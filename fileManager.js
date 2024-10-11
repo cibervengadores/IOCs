@@ -1,14 +1,13 @@
 import simpleGit from 'simple-git';
 import fs from 'fs';
-import dotenv from 'dotenv';
 
-dotenv.config();
-
+// Inicializar Git
 const git = simpleGit();
+
 const GITHUB_REPO = process.env.MY_GITHUB_REPO;
 const GITHUB_USER = process.env.MY_GITHUB_USER;
 const GITHUB_TOKEN = process.env.MY_GITHUB_TOKEN; // Asegúrate de que también existe
-const FILE_PATH = 'peticiones.adoc'; // Archivo para almacenar las peticiones
+const FILE_PATH = 'peticiones.adoc'; // Cambiado a .adoc
 
 // Función para añadir la petición al archivo peticiones.adoc
 export const addToFile = async (petition) => {

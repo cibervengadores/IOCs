@@ -7,15 +7,21 @@ import dotenv from 'dotenv';
 // Cargar las variables de entorno
 dotenv.config();
 
-// Inicializar Express y el bot
-const app = express();
+// Imprimir variables de entorno para depuración
+console.log('MY_BOT_TOKEN:', process.env.MY_BOT_TOKEN);
+console.log('MY_GITHUB_USER:', process.env.MY_GITHUB_USER);
+console.log('MY_GITHUB_REPO:', process.env.MY_GITHUB_REPO);
+console.log('MY_GITHUB_TOKEN:', process.env.MY_GITHUB_TOKEN); // También puedes imprimir el token de GitHub
+
 const bot = new Telegraf(process.env.MY_BOT_TOKEN);
 const git = simpleGit();
 
 const GITHUB_REPO = process.env.MY_GITHUB_REPO;
 const GITHUB_USER = process.env.MY_GITHUB_USER;
 const GITHUB_TOKEN = process.env.MY_GITHUB_TOKEN; // Asegúrate de que también existe
-const FILE_PATH = 'peticiones.adoc'; // Archivo para almacenar las peticiones
+const FILE_PATH = 'peticiones.adoc'; // Cambiado a .adoc
+
+const app = express(); // Inicializar la aplicación Express
 
 // Función para configurar Git
 const configureGit = async () => {
@@ -59,7 +65,44 @@ const addToFile = async (petition) => {
     }
 };
 
-// Configurar el webhook de Telegram (opcional, si decides usar webhook)
+// Manejo del comando /chatp
+bot.command('chatp', async (ctx) => {
+    // Reiniciar los datos de la petición
+    const petitionData = { hash: '', archivo: '', deteccion: '', descripcion: '' };
+    
+    ctx.reply('Por favor, proporciona los siguientes detalles para tu petición:');
+    
+    // Solicitar hash
+    ctx.reply('1. Hash:');
+    
+    // Escuchar la respuesta del usuario
+    bot.on('text', async (ctx) => {
+        if (!petitionData.hash) {
+            petitionData.hash = ctx.message.text;
+            ctx.reply('2. Archivo:');
+        } else if (!petitionData.archivo) {
+            petitionData.archivo = ctx.message.text;
+            ctx.reply('3. Detección:');
+        } else if (!petitionData.deteccion) {
+            petitionData.deteccion = ctx.message.text;
+            ctx.reply('4. Descripción:');
+        } else if (!petitionData.descripcion) {
+            petitionData.descripcion = ctx.message.text;
+
+            // Almacenar la petición
+            await addToFile(petitionData);
+            ctx.reply(`Petición guardada en https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
+            
+            // Reiniciar los datos después de completar la petición
+            petitionData.hash = '';
+            petitionData.archivo = '';
+            petitionData.deteccion = '';
+            petitionData.descripcion = '';
+        }
+    });
+});
+
+// Configurar el webhook de Telegram
 app.use(bot.webhookCallback('/bot')); // Asegúrate de que este sea el endpoint correcto
 
 // Iniciar el servidor Express
