@@ -24,10 +24,21 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Start the application
+    - name: Start the application in the background
       env:
         MY_BOT_TOKEN: ${{ secrets.MY_BOT_TOKEN }}
         MY_GITHUB_USER: ${{ secrets.MY_GITHUB_USER }}
         MY_GITHUB_REPO: ${{ secrets.MY_GITHUB_REPO }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npm start
+      run: |
+        npm start &  # Iniciar el servidor en segundo plano
+
+    - name: Keep-alive requests every 2 hours
+      run: |
+        for i in {1..12}; do  # Ajusta el número de iteraciones (12 horas en este caso)
+          echo "Enviando solicitud de keep-alive número $i..."
+          curl -X POST http://localhost:3000/peticiones.adoc \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -d "-,-,-,-"
+          sleep 7200  # Espera 2 horas (7200 segundos) antes de la siguiente solicitud
+        done

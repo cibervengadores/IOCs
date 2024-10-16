@@ -3,6 +3,7 @@ import simpleGit from 'simple-git';
 import fs from 'fs';
 import express from 'express';
 import dotenv from 'dotenv';
+import axios from 'axios';  // Importa axios para hacer las solicitudes keep-alive
 
 // Cargar las variables de entorno
 dotenv.config();
@@ -12,22 +13,22 @@ const bot = new Telegraf(process.env.MY_BOT_TOKEN);
 const git = simpleGit();
 const GITHUB_REPO = process.env.MY_GITHUB_REPO;
 const GITHUB_USER = process.env.MY_GITHUB_USER;
-const GITHUB_TOKEN = process.env.MY_GITHUB_TOKEN;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const FILE_PATH = 'peticiones.adoc';
 
 const app = express(); 
 
 // Lista de grupos permitidos y tu propio ID
-const ALLOWED_GROUP_IDS = ['-1002063977009', '-1002451309597']; // Reemplaza con los IDs de los grupos permitidos
-const MY_USER_ID = '6303550179'; // Reemplaza con tu propio ID de usuario
+const ALLOWED_GROUP_IDS = ['-1002063977009', '-1002451309597'];
+const MY_USER_ID = '6303550179';
 
 // Variable para almacenar el ID del último mensaje de /chatp
 let lastChatpMessageId = null;
 
 // Función para configurar Git
 const configureGit = async () => {
-    await git.addConfig('user.name', 'cibervengadores');
-    await git.addConfig('user.email', 'cibervengadores@proton.me');
+    await git.addConfig('user.name', 'curiosidadesdehackers');
+    await git.addConfig('user.email', 'info@curiosidadesdehackers.com');
 };
 
 // Función para verificar si el chat es permitido
@@ -35,16 +36,13 @@ const isAllowedChat = (ctx) => {
     const chatId = ctx.chat.id.toString(); 
     const userId = ctx.from.id.toString(); 
 
-    // Permitir solo el uso en privado por el propietario del bot
     if (ctx.chat.type === 'private' && userId === MY_USER_ID) {
         return true; 
-    } 
-    // Permitir solo en los grupos especificados
-    else if (ctx.chat.type === 'supergroup' || ctx.chat.type === 'group') {
+    } else if (ctx.chat.type === 'supergroup' || ctx.chat.type === 'group') {
         return ALLOWED_GROUP_IDS.includes(chatId);
     }
 
-    return false; // Chats no permitidos
+    return false;
 };
 
 // Función para añadir la petición al archivo peticiones.adoc
@@ -76,30 +74,25 @@ const addToFile = async (petition) => {
 
 // Manejo del comando /chatp
 bot.command('chatp', async (ctx) => {
-    // Verificar si el chat es permitido antes de responder al comando
     if (!isAllowedChat(ctx)) {
         ctx.reply('⚠️ No tienes permiso para usar este bot aquí.');
         return;
     }
 
     const message = await ctx.reply('✨ Por favor, proporciona los siguientes detalles en una sola línea, separados por comas (sin espacios):\n1️⃣ Hash,\n2️⃣ Nombre del archivo,\n3️⃣ Detección,\n4️⃣ Descripción.\n⚠️ Responde a este mensaje ⚠️');
-    
-    // Almacenar el ID del mensaje para futuras respuestas
     lastChatpMessageId = message.message_id;
 });
 
 // Escuchar solo respuestas al mensaje específico
 bot.on('text', async (ctx) => {
-    // Verificar si el chat es permitido antes de procesar el mensaje
     if (!isAllowedChat(ctx)) {
-        return; // Ignorar mensajes de chats no permitidos
+        return;
     }
 
-    // Asegurarse de que solo se responde a mensajes específicos
     const isReply = ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === lastChatpMessageId;
 
     if (!isReply) {
-        return; // Ignorar mensajes que no son respuestas al último mensaje de /chatp
+        return;
     }
 
     const input = ctx.message.text.split(',');
@@ -113,15 +106,35 @@ bot.on('text', async (ctx) => {
         };
 
         await addToFile(petitionData);
-        ctx.reply(`✅ Indicador de compromiso guardado:\n\n1️⃣ Hash: ${petitionData.hash}\n2️⃣ Nombre del archivo: ${petitionData.archivo}\n3️⃣ Detección: ${petitionData.deteccion}\n4️⃣ Descripción: ${petitionData.descripcion}\n\n✅ Indicador de compromiso guardado exitosamente! 🎉\n🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
+        ctx.reply(`✅ Indicador de compromiso guardado:\n\n1️⃣ Hash: ${petitionData.hash}\n2️⃣ Nombre del archivo: ${petitionData.archivo}\n3️⃣ Detección: ${petitionData.deteccion}\n4️⃣ Descripción: ${petitionData.descripcion}\n\n✅ Indicador guardado exitosamente! 🎉\n🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
     } else {
         ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). ⚠️ Responde al mensaje principal ⚠️');
     }
 });
 
-// Iniciar el servidor Express
-app.use(bot.webhookCallback('/bot'));
+// Ruta para manejar el keep-alive en /peticiones.adoc
+app.post('/peticiones.adoc', (req, res) => {
+    console.log('Petición keep-alive recibida:', req.body);
+    res.send('Keep-alive recibida');  // Respuesta simple para confirmar que la solicitud fue recibida
+});
 
+// Función para enviar solicitud de keep-alive cada dos horas
+const keepAliveRequest = () => {
+    axios.post('http://localhost:3000/peticiones.adoc', {
+        data: '-,-,-,-'
+    })
+    .then(response => {
+        console.log('Petición exitosa para mantener el servidor activo.');
+    })
+    .catch(error => {
+        console.error('Error en la petición keep-alive:', error.message);
+    });
+};
+
+// Ejecutar la solicitud keep-alive cada dos horas (7200000 milisegundos)
+setInterval(keepAliveRequest, 7200000); // 2 horas = 7200000 ms
+
+// Iniciar el servidor Express
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
@@ -131,4 +144,7 @@ app.listen(PORT, async () => {
     }).catch((error) => {
         console.error('Error al lanzar el bot:', error);
     });
+
+    // Ejecutar la primera solicitud inmediatamente
+    keepAliveRequest();
 });
