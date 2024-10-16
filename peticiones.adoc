@@ -1,10 +1,101 @@
-== Peticiones
-
 [cols="1,1,1,1"]
 |===
 | Hash | Archivo | Detección | Descripción
-| asfsaf | afsdaf | safasf | asffa
-| safasf | safafs | asfas | asf
-| safas | asfas | asfsaf | asfsaf
-| asdf | saf | asf | saf
-| asf | saf | saf | asf
+| - | - | 109[.]120[.]177[.]224 | Medusa Stealer
+| - | - | 194[.]87[.]29[.]74 | Medusa Stealer
+| - | - | 176[.]124[.]204[.]206 | Medusa Stealer
+| - | - | 194[.]87[.]29[.]74 | Medusa Stealer
+| - | - | 195[.]133[.]18[.]88 | Medusa Stealer
+| - | - | 79[.]137[.]202[.]152 | Medusa Stealer
+| - | - | 109[.]120[.]179[.]61 | Medusa Stealer
+| - | - | 89[.]208[.]96[.]148 | Medusa Stealer
+| - | - | 109[.]120[.]140[.]242 | Medusa Stealer
+| - | - | 5[.]182[.]87[.]27 | Medusa Stealer
+| - | - | 185[.]125[.]230[.]40 | Medusa Stealer
+| - | - | 5[.]42[.]103[.]173 | Medusa Stealer
+| - | - | 5[.]42[.]102[.]43 | Medusa Stealer
+| - | - | 109[.]120[.]178[.]28 | Medusa Stealer
+| - | - | 195[.]133[.]18[.]15 | Medusa Stealer
+| - | - | 89[.]185[.]85[.]128 | Medusa Stealer
+| - | - | 144[.]76[.]68[.]247 | Medusa Stealer
+| - | - | hypexfinancial[.]com | Medusa Stealer
+| - | - | voltampereactive[.]com | Medusa Stealer
+| - | - | planchereserver[.]com | Medusa Stealer
+| - | - | thirdmandomavis[.]com | Medusa Stealer
+| - | - | fourthmanservice[.]com | Medusa Stealer
+| - | - | sithchibb[.]com | Medusa Stealer
+| - | - | copelustration[.]xyz | Medusa Stealer
+| - | - | copefood[.]xyz | Medusa Stealer
+| - | - | seven-oranges[.]com | Medusa Stealer
+| - | - | onemanforest[.]com | Medusa Stealer
+| - | - | twomancake[.]com | Medusa Stealer
+| - | - | threemanshop[.]com | Medusa Stealer
+| - | - | fourmanchurch[.]com | Medusa Stealer
+| - | - | fivemanchool[.]com | Medusa Stealer
+| - | - | sixmanteams[.]com | Medusa Stealer
+| - | - | sevenmanjungle[.]com | Medusa Stealer
+| - | - | 88mansession[.]com | Medusa Stealer
+| - | - | fiveradio-newbam[.]com | Medusa Stealer
+| - | - | nine9manforest[.]com | Medusa Stealer
+| - | - | 10decadesmen[.]com | Medusa Stealer
+| - | - | 11cyclesforest[.]com | Medusa Stealer
+| - | - | 1messisnfarm[.]com | Medusa Stealer
+| - | - | 2moniunesson[.]com | Medusa Stealer
+| - | - | 3alphabetjay[.]com | Medusa Stealer
+| - | - | 4sessionmoon[.]com | Medusa Stealer
+| - | - | 5poleanalhy[.]com | Medusa Stealer
+| - | - | 6treesmangle[.]com | Medusa Stealer
+| - | - | 7motionmansa[.]com | Medusa Stealer
+| - | - | 8boomandool[.]com | Medusa Stealer
+| - | - | 9cantronnfit[.]com | Medusa Stealer
+| - | - | 10trioneyue8ss[.]com | Medusa Stealer
+| - | - | 11beamgools[.]com | Medusa Stealer
+| bcdb721d5be41a9d61bee20a458ae748e023238f | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
+| 2d3a95e91449a366ccf56177a4542cc439635768 | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
+| 77daf77d9d2a08cc22981c004689b870f74544b5 | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
+| 6764ddb2e5b18bf5d0c621f3078d7ac72865c1c3 | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
+| 86cdb729094c013e411ac9b4c72485a55a629e5d | | Trojan.Win64.EDRKILLSHIFT.A | EDRKILLSHIFTER Binary
+| 2e89cf3267c8724002c3c89be90874a22812efc6 | | Trojan.Win64.EDRKILLSHIFT.YXEHY | EDRKILLSHIFTER Binary
+| hxxp://82.147.85[.]52/Loader.exe | | C&C Server | IP Address where the Anti-EDR was downloaded
+| 4c0d755f42902559d16b73ccc4511897f7bbce94 | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
+| 189c638388acd0189fe164cf81e455e41d9629d6 | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
+| de1241a592760cc1d850be8f41beebcd460b66ec | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
+| 8de2d38d33294586b4758599fdf65f1a265e013b | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
+| 5f2c7da181a0ef32df5b9c8a10ea5b3135489021 | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
+| 0bc729600a84f9c6356dc09edc843a36cd3fa3a9cf3148537db8aa94af4f969c | 172883701194d92b397f675a5540cc755b22045792762d574d00728a55f4aa1d3437adce26334.dat-decoded | dll | None
+| 197aeec0c11ec28146e26e140584bf05adf81ac74af87448776a2cf5c698ec4f | 197aeec0c11ec28146e26e140584bf05adf81ac74af87448776a2cf5c698ec4f.exe | exe | None
+| 27f04984e78b3ea1c34863e4a68b97f41e657b63e4e380d30e156c671da33b30 | file | exe | None
+| 2ad0b05a69d900395e4ddb75a67eec129a60c7bc7407f05806204c286345c7dd | 172883838590084c8801d02646b8e714feffae85926b0947ea91abe26d95df9563b13aa054698.dat-decoded | exe | None
+| 2b2a240fbda2933b546a6d1b495d21878b9bf67da1c7e5b4cad29c8b82c5d706 | 2b2a240fbda2933b546a6d1b495d21878b9bf67da1c7e5b4cad29c8b82c5d706.exe | exe | None
+| 2b727f4b529097748b5c49720bb42da02efb7758bf6870acfd4404c24b60840b | 278df1e655d9d27b659468ea21758d17.exe | exe | Stealc
+| 2b89bba8e264ad85ed07127f63cc7a711e05867525e4143edddb06dc9bbf2f08 | 2b89bba8e264ad85ed07127f63cc7a711e05867525e4143edddb06dc9bbf2f08.exe | exe | None
+| 35e366b9b046cd129968306cf0ffb92f213149a12d48a2e782fd0e25dba28462 | 35e366b9b046cd129968306cf0ffb92f213149a12d48a2e782fd0e25dba28462.exe | exe | None
+| 44000ef219ae772d52718f0b0930309165753a332ead8376816f154e5ebeafdd | 1728837011f2c8c4409febaf6c32a8ab478efe1cbe481eec5860f61fb84d06b6e12e91d6fe985.dat-decoded | dll | None
+| 4960838a390adf1ea412850ca14f15ce7c201fa967c0089df97742ee517ed0fe | 4960838a390adf1ea412850ca14f15ce7c201fa967c0089df97742ee517ed0fe.exe | exe | None
+| 4aecacc803e54cc06db8e3a84e910d5376f58867e2436eb68a19a9c203043bd2 | 4aecacc803e54cc06db8e3a84e910d5376f58867e2436eb68a19a9c203043bd2.exe | exe | None
+| 51dfdbb1827bef1e82986bc82f81d3dc9e5cd82b965d295b53d8a237c438746c | 172883701006389bb99f6d115214927b37b8a4c203b4e04e763bd0f4e7feb16fc453056bba609.dat-decoded | dll | None
+| 613b4f35bfac7662559bd5c36e06493e60463f11d443ddd8d334bd361ea8d969 | file | exe | None
+| 6feb92743d620750c92fac455db821d1f97361c73b275d97b96294b8a0840217 | SecuriteInfo.com.Trojan.Win64.Inject.4588.21334 | exe | None
+| b6737bd5cb107768640e737f9837fed8455d603ae9f86834a968d71f140cea48 | file | exe | None
+| bc71709ab6556ee1c4b72df4bd46e592d5ad94511f17bb24f7944e3d28a13217 | SecuriteInfo.com.Heuristic.HEUR.AGEN.1319884.13784.6616 | exe | None
+| bd00a7577088b67b52699f956275a3f563d623ca907feeeaee8d2f821d35de40 | bd00a7577088b67b52699f956275a3f563d623ca907feeeaee8d2f821d35de40.exe | exe | None
+| cc92146cb6e5e514c4bae54ced9f4bf6724b6b8b370f2f6d219aa5b0f95390ba | cc92146cb6e5e514c4bae54ced9f4bf6724b6b8b370f2f6d219aa5b0f95390ba.exe | exe | None
+| d69647cf1c96e058e4a9ed4887cc08a36c863751e711f98171e32cdc36478eda | d69647cf1c96e058e4a9ed4887cc08a36c863751e711f98171e32cdc36478eda.exe | exe | BlankGrabber
+| dd4c271013a197bb197b6d0558d98c05374d337a57cc5fefd5ef1ec8f01f8608 | dd4c271013a197bb197b6d0558d98c05374d337a57cc5fefd5ef1ec8f01f8608.exe | exe | AsyncRAT
+| e00ad02b0b162b28aa86c99845253184960e5532f7f74091cfb5a8a677084347 | e00ad02b0b162b28aa86c99845253184960e5532f7f74091cfb5a8a677084347.exe | exe | None |
+| e8cf86886982c722e195f315a8fa68dda61dea4b8c992162c25a733688b4fda2 | 1728837010b60f68d3555d8bdad5feb2f1c578e97c5b42a7d09451cf69c155dd52e1353297227.dat-decoded | dll | None |
+| f221046e04812cb9cc27d82d35d6445f70801fb9ed0755d8cdffee45b61ba525 | SecuriteInfo.com.Win64.Malware-gen.1863.6431 | exe | None |
+| fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | 1728837010f8dbc27ab56e33ce777df8975cafb75f4fb4ee8083e6485fe669922eb6a54392628.dat-decoded | dll | None |
+| 46.101.139.173 | Download server (perfctl malware) ||
+| 104.183.100.189 | Download server (perfctl malware) ||
+| 198.211.126.180 | Download server (perfctl malware) ||
+| bitping.com | Proxy-jacking service (perfctl malware) ||
+| earn.fm | Proxy-jacking service (perfctl malware) ||
+| speedshare.app | Proxy-jacking service (perfctl malware) ||
+| repocket.com | Proxy-jacking service (perfctl malware) ||
+| 0f60320cb61e67a9bb824e5e69fc68cfd5061ee8 | Malware (perfctl malware) ||
+| 183446495a1f07b17f3632eadca2fb7d2af10de7 | Cryptominer (perfctl malware) ||
+| f0f2dc608e8c24e8e6d4eff2ebddccfecd3f879a | Rootkit (perfctl malware) ||
+
+
+| - | - | https://snetflix[.]info/ | Phishing Netflix
