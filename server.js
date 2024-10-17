@@ -56,8 +56,7 @@ const addToFile = async (petition) => {
         fs.appendFileSync(FILE_PATH, formattedPetition);
         console.log('Petición añadida:', formattedPetition);
 
-        const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
-
+        const gitUrl = `https://${MY_GITHUB_USER}:${MY_GITHUB_TOKEN}@github.com/${MY_GITHUB_USER}/${MY_GITHUB_REPO}.git`;
         await git.add(FILE_PATH);
         await git.commit(`Add petition: ${petition.hash}`);
 
