@@ -100,3 +100,4 @@
 
 | - | - | https://snetflix[.]info/ | Phishing Netflix
 | - | - | - | -
+| s | s | s | s
