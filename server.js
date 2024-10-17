@@ -3,7 +3,6 @@ import simpleGit from 'simple-git';
 import fs from 'fs';
 import express from 'express';
 import dotenv from 'dotenv';
-import axios from 'axios';  // Importa axios para hacer las solicitudes keep-alive
 
 // Cargar las variables de entorno
 dotenv.config();
@@ -111,28 +110,6 @@ bot.on('text', async (ctx) => {
     }
 });
 
-// Ruta para manejar el keep-alive en /peticiones.adoc
-app.post('/peticiones.adoc', (req, res) => {
-    console.log('Petición keep-alive recibida:', req.body);
-    res.send('Keep-alive recibida');  // Respuesta simple para confirmar que la solicitud fue recibida
-});
-
-// Función para enviar solicitud de keep-alive cada dos horas
-const keepAliveRequest = () => {
-    axios.post('http://localhost:3000/peticiones.adoc', {
-        data: '-,-,-,-'
-    })
-    .then(response => {
-        console.log('Petición exitosa para mantener el servidor activo.');
-    })
-    .catch(error => {
-        console.error('Error en la petición keep-alive:', error.message);
-    });
-};
-
-// Ejecutar la solicitud keep-alive cada dos horas (7200000 milisegundos)
-setInterval(keepAliveRequest, 7200000); // 2 horas = 7200000 ms
-
 // Iniciar el servidor Express
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
@@ -143,7 +120,4 @@ app.listen(PORT, async () => {
     }).catch((error) => {
         console.error('Error al lanzar el bot:', error);
     });
-
-    // Ejecutar la primera solicitud inmediatamente
-    keepAliveRequest();
 });
