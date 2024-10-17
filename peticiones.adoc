@@ -104,3 +104,4 @@
 | s | t | e | u
 | A | a | a | -
 | Pepe | pepe | pepe | pepe
+| Yaya | yaya | yaya | yaya
