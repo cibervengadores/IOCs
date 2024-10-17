@@ -13,7 +13,7 @@ const bot = new Telegraf(process.env.MY_BOT_TOKEN);
 const git = simpleGit();
 const GITHUB_REPO = process.env.MY_GITHUB_REPO;
 const GITHUB_USER = process.env.MY_GITHUB_USER;
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_TOKEN = process.env.MY_GITHUB_TOKEN;
 const FILE_PATH = 'peticiones.adoc';
 
 const app = express(); 
@@ -56,7 +56,7 @@ const addToFile = async (petition) => {
         fs.appendFileSync(FILE_PATH, formattedPetition);
         console.log('Petición añadida:', formattedPetition);
 
-        const gitUrl = `https://${MY_GITHUB_USER}:${MY_GITHUB_TOKEN}@github.com/${MY_GITHUB_USER}/${MY_GITHUB_REPO}.git`;
+        const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
         await git.add(FILE_PATH);
         await git.commit(`Add petition: ${petition.hash}`);
 
