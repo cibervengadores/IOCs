@@ -49,6 +49,7 @@ const addToFile = async (petition) => {
     try {
         if (!fs.existsSync(FILE_PATH)) {
             fs.writeFileSync(FILE_PATH, `== Peticiones\n\n[cols="1,1,1,1"]\n|===\n| Hash | Archivo | Detección | Descripción\n`);
+            console.log('Archivo peticiones.adoc creado.');
         }
 
         const formattedPetition = `| ${petition.hash} | ${petition.archivo} | ${petition.deteccion} | ${petition.descripcion}\n`;
@@ -57,15 +58,17 @@ const addToFile = async (petition) => {
 
         const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
         await git.add(FILE_PATH);
+        console.log(`Archivo ${FILE_PATH} añadido a Git.`);
+
         await git.commit(`Add petition: ${petition.hash}`);
+        console.log(`Commit realizado con el mensaje: "Add petition: ${petition.hash}"`);
 
         await git.push(gitUrl, 'main', { '--force': null });
         console.log('Push forzado realizado.');
     } catch (error) {
+        console.error('Error guardando en GitHub:', error.message);
         if (error.message.includes('index.lock')) {
             fs.unlinkSync('.git/index.lock');
-        } else {
-            console.error('Error guardando en GitHub:', error.message);
         }
     }
 };
@@ -103,6 +106,7 @@ bot.on('text', async (ctx) => {
             descripcion: input[3].trim(),
         };
 
+        console.log('Datos recibidos:', petitionData);  // Verifica que los datos se reciben correctamente
         await addToFile(petitionData);
         ctx.reply(`✅ Indicador de compromiso guardado:\n\n1️⃣ Hash: ${petitionData.hash}\n2️⃣ Nombre del archivo: ${petitionData.archivo}\n3️⃣ Detección: ${petitionData.deteccion}\n4️⃣ Descripción: ${petitionData.descripcion}\n\n✅ Indicador guardado exitosamente! 🎉\n🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
     } else {
