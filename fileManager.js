@@ -6,6 +6,15 @@ import { addToFile } from './filemanager.js'; // Importar la función addToFile
 // Cargar las variables de entorno
 dotenv.config();
 
+// Verificar que todas las variables de entorno necesarias estén presentes
+const requiredEnvVars = ['MY_BOT_TOKEN', 'MY_GITHUB_USER', 'MY_GITHUB_TOKEN', 'MY_GITHUB_REPO'];
+requiredEnvVars.forEach((varName) => {
+    if (!process.env[varName]) {
+        console.error(`Error: ${varName} no está definido en el archivo .env`);
+        process.exit(1);
+    }
+});
+
 // Configuración del bot
 const bot = new Telegraf(process.env.MY_BOT_TOKEN);
 const app = express();
@@ -65,8 +74,13 @@ bot.on('text', async (ctx) => {
         };
 
         console.log('Datos recibidos:', petitionData); // Verifica que los datos se reciben correctamente
-        await addToFile(petitionData); // Llama a addToFile para añadir la petición
-        ctx.reply(`✅ Indicador de compromiso guardado:\n\n1️⃣ Hash: ${petitionData.hash}\n2️⃣ Nombre del archivo: ${petitionData.archivo}\n3️⃣ Detección: ${petitionData.deteccion}\n4️⃣ Descripción: ${petitionData.descripcion}\n\n✅ Indicador guardado exitosamente! 🎉\n🔗 Consulta aquí: https://github.com/${process.env.MY_GITHUB_USER}/${process.env.MY_GITHUB_REPO}/blob/main/peticiones.adoc`);
+        try {
+            await addToFile(petitionData); // Llama a addToFile para añadir la petición
+            ctx.reply(`✅ Indicador de compromiso guardado:\n\n1️⃣ Hash: ${petitionData.hash}\n2️⃣ Nombre del archivo: ${petitionData.archivo}\n3️⃣ Detección: ${petitionData.deteccion}\n4️⃣ Descripción: ${petitionData.descripcion}\n\n✅ Indicador guardado exitosamente! 🎉\n🔗 Consulta aquí: https://github.com/${process.env.MY_GITHUB_USER}/${process.env.MY_GITHUB_REPO}/blob/main/peticiones.adoc`);
+        } catch (error) {
+            console.error('Error al agregar el indicador:', error);
+            ctx.reply('⚠️ Hubo un error al guardar el indicador. Inténtalo de nuevo más tarde.');
+        }
     } else {
         ctx.reply('⚠️ Por favor, asegúrate de proporcionar exactamente cuatro valores, separados por comas (sin espacios). ⚠️ Responde al mensaje principal ⚠️');
     }
@@ -80,5 +94,6 @@ app.listen(PORT, async () => {
         console.log('Bot iniciado y escuchando comandos.');
     }).catch((error) => {
         console.error('Error al lanzar el bot:', error);
+        process.exit(1); // Finaliza el proceso si hay un error al lanzar el bot
     });
 });
