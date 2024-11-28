@@ -56,28 +56,28 @@ const addToFile = async (petition) => {
         // Si no existe el archivo, crearlo con encabezados
         if (!fs.existsSync(FILE_PATH)) {
             fs.writeFileSync(FILE_PATH, `== Peticiones\n\n[cols="1,1,1,1"]\n|===\n| Hash | Archivo | Detección | Descripción\n`);
-            console.log('Archivo peticiones.adoc creado.');
+            // console.log('Archivo peticiones.adoc creado.');  // Comentado para evitar el log
         }
 
         // Formatear la petición
         const formattedPetition = `| ${petition.hash} | ${petition.archivo} | ${petition.deteccion} | ${petition.descripcion}\n`;
         fs.appendFileSync(FILE_PATH, formattedPetition);
-        console.log('Petición añadida:', formattedPetition);
+        // console.log('Petición añadida:', formattedPetition);  // Comentado para evitar el log
 
         // Configuración del repositorio remoto con GitHub
         const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
 
         // Añadir el archivo modificado al repositorio
         await git.add(FILE_PATH);
-        console.log(`Archivo ${FILE_PATH} añadido a Git.`);
+        // console.log(`Archivo ${FILE_PATH} añadido a Git.`);  // Comentado para evitar el log
 
         // Realizar commit con el mensaje correspondiente
         await git.commit(`Add petition: ${petition.hash}`);
-        console.log(`Commit realizado con el mensaje: "Add petition: ${petition.hash}"`);
+        // console.log(`Commit realizado con el mensaje: "Add petition: ${petition.hash}"`);  // Comentado para evitar el log
 
         // Realizar push a GitHub
         await git.push('origin', 'main');
-        console.log('Push realizado con éxito.');
+        // console.log('Push realizado con éxito.');  // Comentado para evitar el log
     } catch (error) {
         console.error('Error guardando en GitHub:', error.message);
         if (error.message.includes('index.lock')) {
