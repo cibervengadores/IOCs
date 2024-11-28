@@ -98,3 +98,4 @@
 | f0f2dc608e8c24e8e6d4eff2ebddccfecd3f879a | Rootkit (perfctl malware) ||
 | - | - | https://snetflix[.]info/ | Phishing Netflix
 | l | l | l | l
+| orrrr | rrrrr | rrrr | rrr
