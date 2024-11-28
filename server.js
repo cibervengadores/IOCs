@@ -27,8 +27,8 @@ let lastChatpMessageId = null;
 // Función para configurar Git
 const configureGit = async () => {
     try {
-        await git.addConfig('user.name', 'curiosidadesdehackers');
-        await git.addConfig('user.email', 'info@curiosidadesdehackers.com');
+        await git.addConfig('user.name', 'cibervengadores');
+        await git.addConfig('user.email', 'cibervengadores@proton.me');
         await git.addConfig('url."https://".insteadOf', 'git://');  // Asegura que se use https en lugar de git
         console.log('Configuración de Git realizada.');
     } catch (error) {
