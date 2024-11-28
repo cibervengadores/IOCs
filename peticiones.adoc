@@ -105,3 +105,4 @@
 | fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | dll | none
 | dire | dire | dire | dire
 | safsadfdaasgsgdfgasgsdagg | active | ddl | none
+| 3b2de5c23a09cee3661dd8f499d43ca5275159c64bd567cfcc133aceac5b2573 | EDRSilencer.exe | EDRSilencer | Herramienta para silenciar o evadir EDR.
