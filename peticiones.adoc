@@ -106,3 +106,4 @@
 | dire | dire | dire | dire
 | safsadfdaasgsgdfgasgsdagg | active | ddl | none
 | 3b2de5c23a09cee3661dd8f499d43ca5275159c64bd567cfcc133aceac5b2573 | EDRSilencer.exe | EDRSilencer | Herramienta para silenciar o evadir EDR.
+| 08d7aa59bd14b270d8d0a7a757d796248dae7a8ce2f82a8dc7a3b882ff4170a9 | EDRSilencer.exe | EDRSilencer | Hacktool usado para manipular el comportamiento de EDR.
