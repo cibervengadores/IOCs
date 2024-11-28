@@ -96,5 +96,5 @@
 | 0f60320cb61e67a9bb824e5e69fc68cfd5061ee8 | Malware (perfctl malware) ||
 | 183446495a1f07b17f3632eadca2fb7d2af10de7 | Cryptominer (perfctl malware) ||
 | f0f2dc608e8c24e8e6d4eff2ebddccfecd3f879a | Rootkit (perfctl malware) ||
-| - | - | https://snetflix[.]info/ | Phishing Netflix ||
+| - | - | https://snetflix[.]info/ | Phishing Netflix
 
