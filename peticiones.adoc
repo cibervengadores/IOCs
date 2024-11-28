@@ -101,3 +101,4 @@
 | prueba1 | prueba2 | prueba3 | pruea4
 =======
 >>>>>>> 40c88c2b8d31f0e7c8c45fb64d6da9cca4b81da6
+| prueba1 | prueba2 | prueba3 | pruea4
