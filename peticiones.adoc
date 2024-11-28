@@ -108,3 +108,4 @@
 | 3b2de5c23a09cee3661dd8f499d43ca5275159c64bd567cfcc133aceac5b2573 | EDRSilencer.exe | EDRSilencer | Herramienta para silenciar o evadir EDR.
 | 08d7aa59bd14b270d8d0a7a757d796248dae7a8ce2f82a8dc7a3b882ff4170a9 | EDRSilencer.exe | EDRSilencer | Hacktool usado para manipular el comportamiento de EDR.
 | c9b25e4425550d311d41de08e254c55945d4b0ec3206192d5c0454c3926e3d43 | EDRSilencer.exe | EDRSilencer | Variante de la herramienta de evasión de EDR.
+| 721af117726af1385c08cc6f49a801f3cf3f057d9fd26fcec2749455567888e7 | EDRSilencer.exe | EDRSilencer | Hacktool
