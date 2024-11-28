@@ -26,8 +26,14 @@ let lastChatpMessageId = null;
 
 // Función para configurar Git
 const configureGit = async () => {
-    await git.addConfig('user.name', 'curiosidadesdehackers');
-    await git.addConfig('user.email', 'info@curiosidadesdehackers.com');
+    try {
+        await git.addConfig('user.name', 'curiosidadesdehackers');
+        await git.addConfig('user.email', 'info@curiosidadesdehackers.com');
+        await git.addConfig('url."https://".insteadOf', 'git://');  // Asegura que se use https en lugar de git
+        console.log('Configuración de Git realizada.');
+    } catch (error) {
+        console.error('Error configurando Git:', error);
+    }
 };
 
 // Función para verificar si el chat es permitido
@@ -47,24 +53,31 @@ const isAllowedChat = (ctx) => {
 // Función para añadir la petición al archivo peticiones.adoc
 const addToFile = async (petition) => {
     try {
+        // Si no existe el archivo, crearlo con encabezados
         if (!fs.existsSync(FILE_PATH)) {
             fs.writeFileSync(FILE_PATH, `== Peticiones\n\n[cols="1,1,1,1"]\n|===\n| Hash | Archivo | Detección | Descripción\n`);
             console.log('Archivo peticiones.adoc creado.');
         }
 
+        // Formatear la petición
         const formattedPetition = `| ${petition.hash} | ${petition.archivo} | ${petition.deteccion} | ${petition.descripcion}\n`;
         fs.appendFileSync(FILE_PATH, formattedPetition);
         console.log('Petición añadida:', formattedPetition);
 
+        // Configuración del repositorio remoto con GitHub
         const gitUrl = `https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git`;
+
+        // Añadir el archivo modificado al repositorio
         await git.add(FILE_PATH);
         console.log(`Archivo ${FILE_PATH} añadido a Git.`);
 
+        // Realizar commit con el mensaje correspondiente
         await git.commit(`Add petition: ${petition.hash}`);
         console.log(`Commit realizado con el mensaje: "Add petition: ${petition.hash}"`);
 
-        await git.push(gitUrl, 'main', { '--force': null });
-        console.log('Push forzado realizado.');
+        // Realizar push a GitHub
+        await git.push('origin', 'main');
+        console.log('Push realizado con éxito.');
     } catch (error) {
         console.error('Error guardando en GitHub:', error.message);
         if (error.message.includes('index.lock')) {
