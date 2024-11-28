@@ -115,3 +115,4 @@
 | - | - | https://snetflix[.]info/ | Phishing Netflix ||
 >>>>>>> ae5afc4f08cfb237ccabf27d3c355f0f9518d9ae
 | prueba | prueba | prueba | prueba
+| prueba | prueba | prueba | prueba
