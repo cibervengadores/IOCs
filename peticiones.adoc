@@ -113,3 +113,4 @@
 | 08d7aa59bd14b270d8d0a7a757d796248dae7a8ce2f82a8dc7a3b882ff4170a9 | EDRSilencer.exe | EDRSilencer | Hacktool usado para manipular el comportamiento de EDR.
 | - | - | 11beamgools[.]com | Medusa Stealer
 | A | a | a | a
+| A | a | a | a
