@@ -114,3 +114,4 @@
 | - | - | 11beamgools[.]com | Medusa Stealer
 | A | a | a | a
 | A | a | a | a
+| 92f4223bf6b71a9dd3eb604fc5c549de | 413398 | vbs | FacturaElectronicaSolred
