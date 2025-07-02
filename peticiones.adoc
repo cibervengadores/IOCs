@@ -121,3 +121,4 @@
 | hash | nombre | Detección | Descripción
 | hash | nombre | Detección | Descripción
 | hash | nombre | Detección | Descripción
+| hash | nombre | Detección | Descripción
