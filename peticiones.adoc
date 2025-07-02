@@ -117,3 +117,4 @@
 | 92f4223bf6b71a9dd3eb604fc5c549de | 413398 | vbs | FacturaElectronicaSolred
 | pepe | pepe | pepe | pepe
 | prueba1 | prueba2 | prueba3 | prueba4
+| hash | nombre | Detección | Descripción
