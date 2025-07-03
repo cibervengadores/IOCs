@@ -97,12 +97,6 @@ cols="1,1,1,1"]
 | 183446495a1f07b17f3632eadca2fb7d2af10de7 | Cryptominer (perfctl malware) ||
 | f0f2dc608e8c24e8e6d4eff2ebddccfecd3f879a | Rootkit (perfctl malware) ||
 | - | - | https://snetflix[.]info/ | Phishing Netflix
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 40c88c2b8d31f0e7c8c45fb64d6da9cca4b81da6
->>>>>>> 95426ef (Actualización de peticiones.adoc)
 | fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | dll | none
 | safsadfdaasgsgdfgasgsdagg | active | ddl | none
 | 3b2de5c23a09cee3661dd8f499d43ca5275159c64bd567cfcc133aceac5b2573 | EDRSilencer.exe | EDRSilencer | Herramienta para silenciar o evadir EDR.
@@ -112,6 +106,5 @@ cols="1,1,1,1"]
 | Vale | a | a | vale
 | 08d7aa59bd14b270d8d0a7a757d796248dae7a8ce2f82a8dc7a3b882ff4170a9 | EDRSilencer.exe | EDRSilencer | Hacktool usado para manipular el comportamiento de EDR.
 | - | - | 11beamgools[.]com | Medusa Stealer
-
 | 92f4223bf6b71a9dd3eb604fc5c549de | 413398 | vbs | FacturaElectronicaSolred
 | prueba1 | prueba | 2eeee | prueba4
