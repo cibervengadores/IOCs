@@ -117,3 +117,4 @@
 | repocket.com | Proxy-jacking service (perfctl malware) ||
 | safsadfdaasgsgdfgasgsdagg | active | ddl | none
 | speedshare.app | Proxy-jacking service (perfctl malware) ||
+| de1241a592760cc1d850be8f41beebcd460b66ec | - | e8cf86886982c722e195f315a8fa68dda61dea4b8c992162c25a733688b4fda2 | dll
