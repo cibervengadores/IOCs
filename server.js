@@ -24,7 +24,6 @@ let lastListaMessageId = null;
 
 const configureGit = async () => {
     try {
-        // Inicializar si no existe
         if (!fs.existsSync('.git')) {
             await git.init();
         }
@@ -78,14 +77,13 @@ const addToFile = async (petition) => {
     }
 };
 
-// Comandos
-
 bot.command('iniciar', (ctx) => {
     ctx.reply(
         '👋 ¡Bienvenido! Este es un bot para registrar y consultar Indicadores de Compromiso (IOCs).\n\n' +
         '✨ Usa /chatp para añadir un IOC individual\n' +
         '📋 Usa /lista para agregar múltiples IOCs en bloque\n' +
-        '🔎 Usa /buscar para consultar si un hash ya ha sido reportado\n\n' +
+        '🔎 Usa /buscar para consultar si un hash ya ha sido reportado\n' +
+        '📎 Usa /txt para subir un archivo con IOCs\n\n' +
         '🛡️ Todos los indicadores se almacenan aquí:\n' +
         '🔗 https://iocs.curiosidadesdehackers.com'
     );
@@ -109,7 +107,10 @@ bot.command('chatp', async (ctx) => {
     lastChatpMessageId = message.message_id;
 });
 
-// Respuestas
+bot.command('txt', async (ctx) => {
+    if (!isAllowedChat(ctx)) return ctx.reply('⚠️ No tienes permiso para usar este bot aquí.');
+    await ctx.reply('📎 Por favor, responde a este mensaje con el archivo `.txt` que contiene los IOCs en cualquier orden.\nCada línea debe tener 4 campos separados por comas.');
+});
 
 bot.on('text', async (ctx) => {
     if (!isAllowedChat(ctx)) return;
@@ -120,7 +121,6 @@ bot.on('text', async (ctx) => {
 
     if (!isReplyToChatp && !isReplyToBuscar && !isReplyToLista) return;
 
-    // Buscar
     if (isReplyToBuscar) {
         const hashBuscado = ctx.message.text.trim();
         try {
@@ -140,7 +140,6 @@ bot.on('text', async (ctx) => {
         return;
     }
 
-    // Lista
     if (isReplyToLista) {
         const lineas = ctx.message.text.split('\n');
         let exitos = 0, errores = 0, duplicados = 0;
@@ -188,7 +187,6 @@ bot.on('text', async (ctx) => {
         return;
     }
 
-    // Chatp
     if (isReplyToChatp) {
         const input = ctx.message.text.split(',');
         if (input.length !== 4) {
@@ -210,6 +208,94 @@ bot.on('text', async (ctx) => {
             console.error('Error guardando el indicador:', err);
             ctx.reply('⚠️ Error al guardar el indicador. Intenta más tarde.');
         }
+    }
+});
+
+bot.on('document', async (ctx) => {
+    if (!isAllowedChat(ctx)) return;
+
+    const file = ctx.message.document;
+    const fileName = file.file_name;
+
+    if (!fileName.endsWith('.txt')) {
+        return ctx.reply('⚠️ Solo se aceptan archivos con extensión `.txt`');
+    }
+
+    try {
+        const link = await ctx.telegram.getFileLink(file.file_id);
+        const res = await fetch(link.href);
+        const text = await res.text();
+        const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+
+        const normalizeLine = (line) => {
+            const parts = line.split(',').map(x => x.trim());
+            if (parts.length !== 4) return null;
+
+            let hash = '', archivo = '', deteccion = '', descripcion = '';
+
+            for (const part of parts) {
+                if (/^[a-fA-F0-9]{32,64}$/.test(part)) {
+                    hash = part;
+                } else if (/\.(exe|dll|zip|rar|docx?|pdf|js|bat|sh|apk)$/i.test(part)) {
+                    archivo = part;
+                } else if (/malware|trojan|ransom|adware|spyware|worm/i.test(part)) {
+                    deteccion = part;
+                } else {
+                    descripcion = part;
+                }
+            }
+
+            if (!hash || !archivo || !deteccion || !descripcion) return null;
+
+            return { hash, archivo, deteccion, descripcion };
+        };
+
+        const existingContent = fs.existsSync(FILE_PATH) ? fs.readFileSync(FILE_PATH, 'utf-8') : '';
+        const existingHashes = new Set(
+            existingContent.split('\n')
+                .map(l => l.split('|')[1]?.trim())
+                .filter(Boolean)
+        );
+
+        const hashMap = new Map();
+
+        for (const line of lines) {
+            const parsed = normalizeLine(line);
+            if (!parsed || hashMap.has(parsed.hash) || existingHashes.has(parsed.hash)) continue;
+            hashMap.set(parsed.hash, parsed);
+        }
+
+        const nuevasPeticiones = Array.from(hashMap.values());
+
+        if (nuevasPeticiones.length === 0) {
+            return ctx.reply('🔁 Todos los hashes del archivo ya existen, están duplicados o mal formateados.');
+        }
+
+        const encabezado = `== Peticiones\n\n[cols="1,1,1,1"]\n|===\n| Hash | Archivo | Detección | Descripción\n`;
+        const lineasExistentes = existingContent
+            .split('\n')
+            .filter(l => l.trim().startsWith('|'));
+
+        const nuevasLineas = nuevasPeticiones.map(p => `| ${p.hash} | ${p.archivo} | ${p.deteccion} | ${p.descripcion}`);
+        const todasLasLineas = [...lineasExistentes, ...nuevasLineas];
+
+        todasLasLineas.sort((a, b) => {
+            const hashA = a.split('|')[1]?.trim() || '';
+            const hashB = b.split('|')[1]?.trim() || '';
+            return hashA.localeCompare(hashB);
+        });
+
+        const nuevoContenido = encabezado + todasLasLineas.join('\n') + '\n|===\n';
+        fs.writeFileSync(FILE_PATH, nuevoContenido);
+
+        await git.add('.');
+        await git.commit(`Add IOCs from TXT: ${fileName}`);
+        await git.push('origin', 'main');
+
+        ctx.reply(`✅ Se añadieron ${nuevasPeticiones.length} IOCs desde el archivo ${fileName} y se ordenaron por hash.\n🔗 Consulta en: https://iocs.curiosidadesdehackers.com/`);
+    } catch (error) {
+        console.error('Error procesando archivo txt:', error);
+        ctx.reply('⚠️ Hubo un problema al procesar el archivo. Asegúrate de que esté en formato correcto.');
     }
 });
 

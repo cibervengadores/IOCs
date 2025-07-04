@@ -1,4 +1,6 @@
-cols="1,1,1,1"]
+== Peticiones
+
+[cols="1,1,1,1"]
 |===
 | Hash | Archivo | Detección | Descripción
 | - | - | 109[.]120[.]177[.]224 | Medusa Stealer
@@ -50,69 +52,75 @@ cols="1,1,1,1"]
 | - | - | 9cantronnfit[.]com | Medusa Stealer
 | - | - | 10trioneyue8ss[.]com | Medusa Stealer
 | - | - | 11beamgools[.]com | Medusa Stealer
-| bcdb721d5be41a9d61bee20a458ae748e023238f | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
-| 2d3a95e91449a366ccf56177a4542cc439635768 | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
-| 77daf77d9d2a08cc22981c004689b870f74544b5 | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
-| 6764ddb2e5b18bf5d0c621f3078d7ac72865c1c3 | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
-| 86cdb729094c013e411ac9b4c72485a55a629e5d | | Trojan.Win64.EDRKILLSHIFT.A | EDRKILLSHIFTER Binary
-| 2e89cf3267c8724002c3c89be90874a22812efc6 | | Trojan.Win64.EDRKILLSHIFT.YXEHY | EDRKILLSHIFTER Binary
-| hxxp://82.147.85[.]52/Loader.exe | | C&C Server | IP Address where the Anti-EDR was downloaded
-| 4c0d755f42902559d16b73ccc4511897f7bbce94 | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
-| 189c638388acd0189fe164cf81e455e41d9629d6 | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
-| de1241a592760cc1d850be8f41beebcd460b66ec | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
-| 8de2d38d33294586b4758599fdf65f1a265e013b | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
-| 5f2c7da181a0ef32df5b9c8a10ea5b3135489021 | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
+| - | - | https://snetflix[.]info/ | Phishing Netflix
+| - | - | 11beamgools[.]com | Medusa Stealer
+| - | ionbancaria | gest.ionbancaria.com/73BBVA/ersonas | phishing
+| - | 2b89bba8e264ad85ed07127f63cc7a711e05867525e4143edddb06dc9bbf2f08.exe | exe | -
+|===
+| 08d7aa59bd14b270d8d0a7a757d796248dae7a8ce2f82a8dc7a3b882ff4170a9 | EDRSilencer.exe | EDRSilencer | Hacktool usado para manipular el comportamiento de EDR.
+| 08d7aa59bd14b270d8d0a7a757d796248dae7a8ce2f82a8dc7a3b882ff4170a9 | EDRSilencer.exe | EDRSilencer | Hacktool usado para manipular el comportamiento de EDR.
 | 0bc729600a84f9c6356dc09edc843a36cd3fa3a9cf3148537db8aa94af4f969c | 172883701194d92b397f675a5540cc755b22045792762d574d00728a55f4aa1d3437adce26334.dat-decoded | dll | None
+| 0f60320cb61e67a9bb824e5e69fc68cfd5061ee8 | Malware (perfctl malware) ||
+| 104.183.100.189 | Download server (perfctl malware) ||
+| 183446495a1f07b17f3632eadca2fb7d2af10de7 | Cryptominer (perfctl malware) ||
+| 189c638388acd0189fe164cf81e455e41d9629d6 | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
 | 197aeec0c11ec28146e26e140584bf05adf81ac74af87448776a2cf5c698ec4f | 197aeec0c11ec28146e26e140584bf05adf81ac74af87448776a2cf5c698ec4f.exe | exe | None
+| 198.211.126.180 | Download server (perfctl malware) ||
 | 27f04984e78b3ea1c34863e4a68b97f41e657b63e4e380d30e156c671da33b30 | file | exe | None
 | 2ad0b05a69d900395e4ddb75a67eec129a60c7bc7407f05806204c286345c7dd | 172883838590084c8801d02646b8e714feffae85926b0947ea91abe26d95df9563b13aa054698.dat-decoded | exe | None
 | 2b2a240fbda2933b546a6d1b495d21878b9bf67da1c7e5b4cad29c8b82c5d706 | 2b2a240fbda2933b546a6d1b495d21878b9bf67da1c7e5b4cad29c8b82c5d706.exe | exe | None
 | 2b727f4b529097748b5c49720bb42da02efb7758bf6870acfd4404c24b60840b | 278df1e655d9d27b659468ea21758d17.exe | exe | Stealc
 | 2b89bba8e264ad85ed07127f63cc7a711e05867525e4143edddb06dc9bbf2f08 | 2b89bba8e264ad85ed07127f63cc7a711e05867525e4143edddb06dc9bbf2f08.exe | exe | None
+| 2d3a95e91449a366ccf56177a4542cc439635768 | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
+| 2e89cf3267c8724002c3c89be90874a22812efc6 | | Trojan.Win64.EDRKILLSHIFT.YXEHY | EDRKILLSHIFTER Binary
+| 34567890987654 | 3456787767 | perico.exe | eeee
+| 34567890987654 | 3456787767 | perico.exe | eeee
 | 35e366b9b046cd129968306cf0ffb92f213149a12d48a2e782fd0e25dba28462 | 35e366b9b046cd129968306cf0ffb92f213149a12d48a2e782fd0e25dba28462.exe | exe | None
+| 3b2de5c23a09cee3661dd8f499d43ca5275159c64bd567cfcc133aceac5b2573 | EDRSilencer.exe | EDRSilencer | Herramienta para silenciar o evadir EDR.
+| 3dd4567890987654 | 3456787dd767 | perddico.exe | eeedde
 | 44000ef219ae772d52718f0b0930309165753a332ead8376816f154e5ebeafdd | 1728837011f2c8c4409febaf6c32a8ab478efe1cbe481eec5860f61fb84d06b6e12e91d6fe985.dat-decoded | dll | None
+| 46.101.139.173 | Download server (perfctl malware) ||
 | 4960838a390adf1ea412850ca14f15ce7c201fa967c0089df97742ee517ed0fe | 4960838a390adf1ea412850ca14f15ce7c201fa967c0089df97742ee517ed0fe.exe | exe | None
 | 4aecacc803e54cc06db8e3a84e910d5376f58867e2436eb68a19a9c203043bd2 | 4aecacc803e54cc06db8e3a84e910d5376f58867e2436eb68a19a9c203043bd2.exe | exe | None
+| 4c0d755f42902559d16b73ccc4511897f7bbce94 | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
 | 51dfdbb1827bef1e82986bc82f81d3dc9e5cd82b965d295b53d8a237c438746c | 172883701006389bb99f6d115214927b37b8a4c203b4e04e763bd0f4e7feb16fc453056bba609.dat-decoded | dll | None
+| 5f2c7da181a0ef32df5b9c8a10ea5b3135489021 | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
 | 613b4f35bfac7662559bd5c36e06493e60463f11d443ddd8d334bd361ea8d969 | file | exe | None
+| 6764ddb2e5b18bf5d0c621f3078d7ac72865c1c3 | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
 | 6feb92743d620750c92fac455db821d1f97361c73b275d97b96294b8a0840217 | SecuriteInfo.com.Trojan.Win64.Inject.4588.21334 | exe | None
+| 721af117726af1385c08cc6f49a801f3cf3f057d9fd26fcec2749455567888e7 | EDRSilencer.exe | EDRSilencer | Hacktool
+| 759as856948sa48ff0a409785s4a9gsdg60 | rumiko | rumiko.exe | stealer
+| 77daf77d9d2a08cc22981c004689b870f74544b5 | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
+| 86cdb729094c013e411ac9b4c72485a55a629e5d | | Trojan.Win64.EDRKILLSHIFT.A | EDRKILLSHIFTER Binary
+| 8722ab1cf23eab9c9912d67f99c5e2bd | reportevuln.pdf | malware.gen | Informe sobre phishing
+| 8de2d38d33294586b4758599fdf65f1a265e013b | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
+| 92f4223bf6b71a9dd3eb604fc5c549de | 413398 | vbs | FacturaElectronicaSolred
+| aa | aaa | aaa | aaa
+| b55f77889900ddeeff11334455667788 | worm_spread.exe | Worm.AutoPropagate | Se propaga por red compartida
 | b6737bd5cb107768640e737f9837fed8455d603ae9f86834a968d71f140cea48 | file | exe | None
 | bc71709ab6556ee1c4b72df4bd46e592d5ad94511f17bb24f7944e3d28a13217 | SecuriteInfo.com.Heuristic.HEUR.AGEN.1319884.13784.6616 | exe | None
+| bcdb721d5be41a9d61bee20a458ae748e023238f | | Trojan.Win64.EDRKILLSHIFT.YXEHUT | EDRKILLSHIFTER Binary
 | bd00a7577088b67b52699f956275a3f563d623ca907feeeaee8d2f821d35de40 | bd00a7577088b67b52699f956275a3f563d623ca907feeeaee8d2f821d35de40.exe | exe | None
+| bitping.com | Proxy-jacking service (perfctl malware) ||
+| c9b25e4425550d311d41de08e254c55945d4b0ec3206192d5c0454c3926e3d43 | EDRSilencer.exe | EDRSilencer | Variante de la herramienta de evasión de EDR.
 | cc92146cb6e5e514c4bae54ced9f4bf6724b6b8b370f2f6d219aa5b0f95390ba | cc92146cb6e5e514c4bae54ced9f4bf6724b6b8b370f2f6d219aa5b0f95390ba.exe | exe | None
 | d69647cf1c96e058e4a9ed4887cc08a36c863751e711f98171e32cdc36478eda | d69647cf1c96e058e4a9ed4887cc08a36c863751e711f98171e32cdc36478eda.exe | exe | BlankGrabber
 | dd4c271013a197bb197b6d0558d98c05374d337a57cc5fefd5ef1ec8f01f8608 | dd4c271013a197bb197b6d0558d98c05374d337a57cc5fefd5ef1ec8f01f8608.exe | exe | AsyncRAT
+| de1241a592760cc1d850be8f41beebcd460b66ec | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
 | e00ad02b0b162b28aa86c99845253184960e5532f7f74091cfb5a8a677084347 | e00ad02b0b162b28aa86c99845253184960e5532f7f74091cfb5a8a677084347.exe | exe | None |
 | e8cf86886982c722e195f315a8fa68dda61dea4b8c992162c25a733688b4fda2 | 1728837010b60f68d3555d8bdad5feb2f1c578e97c5b42a7d09451cf69c155dd52e1353297227.dat-decoded | dll | None |
+| eae8b72f289afc1d67ea4c4a2b1173b0 | adware.js | Adware.Generic | Publicidad engañosa
+| earn.fm | Proxy-jacking service (perfctl malware) ||
+| f0f2dc608e8c24e8e6d4eff2ebddccfecd3f879a | Rootkit (perfctl malware) ||
 | f221046e04812cb9cc27d82d35d6445f70801fb9ed0755d8cdffee45b61ba525 | SecuriteInfo.com.Win64.Malware-gen.1863.6431 | exe | None |
 | fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | 1728837010f8dbc27ab56e33ce777df8975cafb75f4fb4ee8083e6485fe669922eb6a54392628.dat-decoded | dll | None |
-| 46.101.139.173 | Download server (perfctl malware) ||
-| 104.183.100.189 | Download server (perfctl malware) ||
-| 198.211.126.180 | Download server (perfctl malware) ||
-| bitping.com | Proxy-jacking service (perfctl malware) ||
-| earn.fm | Proxy-jacking service (perfctl malware) ||
-| speedshare.app | Proxy-jacking service (perfctl malware) ||
-| repocket.com | Proxy-jacking service (perfctl malware) ||
-| 0f60320cb61e67a9bb824e5e69fc68cfd5061ee8 | Malware (perfctl malware) ||
-| 183446495a1f07b17f3632eadca2fb7d2af10de7 | Cryptominer (perfctl malware) ||
-| f0f2dc608e8c24e8e6d4eff2ebddccfecd3f879a | Rootkit (perfctl malware) ||
-| - | - | https://snetflix[.]info/ | Phishing Netflix
 | fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | dll | none
-| safsadfdaasgsgdfgasgsdagg | active | ddl | none
-| 3b2de5c23a09cee3661dd8f499d43ca5275159c64bd567cfcc133aceac5b2573 | EDRSilencer.exe | EDRSilencer | Herramienta para silenciar o evadir EDR.
-| 08d7aa59bd14b270d8d0a7a757d796248dae7a8ce2f82a8dc7a3b882ff4170a9 | EDRSilencer.exe | EDRSilencer | Hacktool usado para manipular el comportamiento de EDR.
-| c9b25e4425550d311d41de08e254c55945d4b0ec3206192d5c0454c3926e3d43 | EDRSilencer.exe | EDRSilencer | Variante de la herramienta de evasión de EDR.
-| 721af117726af1385c08cc6f49a801f3cf3f057d9fd26fcec2749455567888e7 | EDRSilencer.exe | EDRSilencer | Hacktool
-| Vale | a | a | vale
-| 08d7aa59bd14b270d8d0a7a757d796248dae7a8ce2f82a8dc7a3b882ff4170a9 | EDRSilencer.exe | EDRSilencer | Hacktool usado para manipular el comportamiento de EDR.
-| - | - | 11beamgools[.]com | Medusa Stealer
-| 92f4223bf6b71a9dd3eb604fc5c549de | 413398 | vbs | FacturaElectronicaSolred
-| prueba1 | prueba | 2eeee | prueba4
-| aa | aaa | aaa | aaa
-| 34567890987654 | 3456787767 | perico.exe | eeee
-| 34567890987654 | 3456787767 | perico.exe | eeee
-| 3dd4567890987654 | 3456787dd767 | perddico.exe | eeedde
+| Hash | Archivo | Detección | Descripción
+| hxxp://82.147.85[.]52/Loader.exe | | C&C Server | IP Address where the Anti-EDR was downloaded
 | ola | gola | sdag | 34567
-| 759as856948sa48ff0a409785s4a9gsdg60 | rumiko | rumiko.exe | stealer
-| - | ionbancaria | gest.ionbancaria.com/73BBVA/ersonas | phishing
-| - | 2b89bba8e264ad85ed07127f63cc7a711e05867525e4143edddb06dc9bbf2f08.exe | exe | -
+| prueba1 | prueba | 2eeee | prueba4
+| repocket.com | Proxy-jacking service (perfctl malware) ||
+| safsadfdaasgsgdfgasgsdagg | active | ddl | none
+| speedshare.app | Proxy-jacking service (perfctl malware) ||
+| Vale | a | a | vale
+|===
