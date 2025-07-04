@@ -115,3 +115,4 @@ cols="1,1,1,1"]
 | ola | gola | sdag | 34567
 | 759as856948sa48ff0a409785s4a9gsdg60 | rumiko | rumiko.exe | stealer
 | - | ionbancaria | gest.ionbancaria.com/73BBVA/ersonas | phishing
+| - | 2b89bba8e264ad85ed07127f63cc7a711e05867525e4143edddb06dc9bbf2f08.exe | exe | -

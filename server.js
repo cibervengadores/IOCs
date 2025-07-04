@@ -66,9 +66,9 @@ const addToFile = async (petition) => {
         const formattedPetition = `| ${petition.hash} | ${petition.archivo} | ${petition.deteccion} | ${petition.descripcion}\n`;
         fs.appendFileSync(FILE_PATH, formattedPetition);
 
-	await git.add('.');
-	await git.commit(`Add petition: ${petition.hash}`);
-	await git.push('origin', 'main');
+        await git.add('.');
+        await git.commit(`Add petition: ${petition.hash}`);
+        await git.push('origin', 'main');
 
     } catch (error) {
         console.error('Error guardando en GitHub:', error.message);
@@ -87,7 +87,7 @@ bot.command('iniciar', (ctx) => {
         '📋 Usa /lista para agregar múltiples IOCs en bloque\n' +
         '🔎 Usa /buscar para consultar si un hash ya ha sido reportado\n\n' +
         '🛡️ Todos los indicadores se almacenan aquí:\n' +
-        '🔗 https://github.com/cibervengadores/IOCs/blob/main/peticiones.adoc'
+        '🔗 https://iocs.curiosidadesdehackers.com'
     );
 });
 
@@ -184,7 +184,7 @@ bot.on('text', async (ctx) => {
             }
         }
 
-        ctx.reply(`📥 Lista procesada:\n✅ Añadidos: ${exitos}\n❌ Errores de formato: ${errores}\n🔁 Duplicados ignorados: ${duplicados}\n\n🔗 Puedes ver la lista completa en: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
+        ctx.reply(`📥 Lista procesada:\n✅ Añadidos: ${exitos}\n❌ Errores de formato: ${errores}\n🔁 Duplicados ignorados: ${duplicados}\n\n🔗 Puedes ver la lista completa en: https://iocs.curiosidadesdehackers.com/`);
         return;
     }
 
@@ -205,7 +205,7 @@ bot.on('text', async (ctx) => {
 
         try {
             await addToFile(petitionData);
-            ctx.reply(`✅ Indicador de compromiso guardado:\n\n1️⃣ Hash: ${petitionData.hash}\n2️⃣ Nombre del archivo: ${petitionData.archivo}\n3️⃣ Detección: ${petitionData.deteccion}\n4️⃣ Descripción: ${petitionData.descripcion}\n\n🔗 Consulta aquí: https://github.com/${GITHUB_USER}/${GITHUB_REPO}/blob/main/peticiones.adoc`);
+            ctx.reply(`✅ Indicador de compromiso guardado:\n\n1️⃣ Hash: ${petitionData.hash}\n2️⃣ Nombre del archivo: ${petitionData.archivo}\n3️⃣ Detección: ${petitionData.deteccion}\n4️⃣ Descripción: ${petitionData.descripcion}\n\n🔗 Consulta aquí: https://iocs.curiosidadesdehackers.com/`);
         } catch (err) {
             console.error('Error guardando el indicador:', err);
             ctx.reply('⚠️ Error al guardar el indicador. Intenta más tarde.');
