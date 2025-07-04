@@ -56,7 +56,6 @@
 | - | - | 11beamgools[.]com | Medusa Stealer
 | - | ionbancaria | gest.ionbancaria.com/73BBVA/ersonas | phishing
 | - | 2b89bba8e264ad85ed07127f63cc7a711e05867525e4143edddb06dc9bbf2f08.exe | exe | -
-|===
 | 08d7aa59bd14b270d8d0a7a757d796248dae7a8ce2f82a8dc7a3b882ff4170a9 | EDRSilencer.exe | EDRSilencer | Hacktool usado para manipular el comportamiento de EDR.
 | 08d7aa59bd14b270d8d0a7a757d796248dae7a8ce2f82a8dc7a3b882ff4170a9 | EDRSilencer.exe | EDRSilencer | Hacktool usado para manipular el comportamiento de EDR.
 | 0bc729600a84f9c6356dc09edc843a36cd3fa3a9cf3148537db8aa94af4f969c | 172883701194d92b397f675a5540cc755b22045792762d574d00728a55f4aa1d3437adce26334.dat-decoded | dll | None
