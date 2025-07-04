@@ -94,7 +94,6 @@
 | 8722ab1cf23eab9c9912d67f99c5e2bd | reportevuln.pdf | malware.gen | Informe sobre phishing
 | 8de2d38d33294586b4758599fdf65f1a265e013b | | Ransom.Win64.RANSOMHUB.SMYXEHEZ.go | RansomHub Ransomware Binaries
 | 92f4223bf6b71a9dd3eb604fc5c549de | 413398 | vbs | FacturaElectronicaSolred
-| aa | aaa | aaa | aaa
 | b55f77889900ddeeff11334455667788 | worm_spread.exe | Worm.AutoPropagate | Se propaga por red compartida
 | b6737bd5cb107768640e737f9837fed8455d603ae9f86834a968d71f140cea48 | file | exe | None
 | bc71709ab6556ee1c4b72df4bd46e592d5ad94511f17bb24f7944e3d28a13217 | SecuriteInfo.com.Heuristic.HEUR.AGEN.1319884.13784.6616 | exe | None
@@ -114,12 +113,7 @@
 | f221046e04812cb9cc27d82d35d6445f70801fb9ed0755d8cdffee45b61ba525 | SecuriteInfo.com.Win64.Malware-gen.1863.6431 | exe | None |
 | fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | 1728837010f8dbc27ab56e33ce777df8975cafb75f4fb4ee8083e6485fe669922eb6a54392628.dat-decoded | dll | None |
 | fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | fb359e0260f5b7ab2d73189af78701b37f359a43a1b49719adc5a78987af4043 | dll | none
-| Hash | Archivo | Detección | Descripción
 | hxxp://82.147.85[.]52/Loader.exe | | C&C Server | IP Address where the Anti-EDR was downloaded
-| ola | gola | sdag | 34567
-| prueba1 | prueba | 2eeee | prueba4
 | repocket.com | Proxy-jacking service (perfctl malware) ||
 | safsadfdaasgsgdfgasgsdagg | active | ddl | none
 | speedshare.app | Proxy-jacking service (perfctl malware) ||
-| Vale | a | a | vale
-|===
